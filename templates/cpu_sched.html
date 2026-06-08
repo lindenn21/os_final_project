@@ -3,6 +3,9 @@
 <head>
     <title>CPU Scheduling Simulator</title>
 
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='css/header.css') }}">
+
     <style>
 
         *{
@@ -13,14 +16,21 @@
         }
 
         body{
-            background:#f4f6f9;
-            padding:40px;
-        }
+    margin:0;
+    background:#f4f6f9;
+    font-family:Arial, sans-serif;
+
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
 
         .container{
-            max-width:1200px;
-            margin:auto;
-        }
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:40px;
+}
 
         h1{
             text-align:center;
@@ -126,9 +136,8 @@
 
     {% include 'header.html' %}
 
-    ...
+    <div class="container">
 
-<div class="container">
 
     <a href="/" class="back-btn">
         <button>← Back to Home</button>
