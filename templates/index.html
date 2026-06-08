@@ -2,20 +2,111 @@
 <html>
 <head>
     <title>OS Finals</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:#f4f6f9;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        }
+
+        .title{
+            margin-top:60px;
+            font-size:4rem;
+            font-weight:bold;
+            text-align:center;
+            letter-spacing:3px;
+        }
+
+        .subtitle{
+            margin-top:10px;
+            color:#555;
+            font-size:1.2rem;
+        }
+
+        .button-container{
+            width:90%;
+            max-width:1200px;
+
+            margin-top:auto;
+            margin-bottom:60px;
+
+            display:grid;
+            grid-template-columns:repeat(2, 1fr);
+            gap:30px;
+        }
+
+        .module-btn{
+            height:180px;
+
+            background:white;
+
+            border:none;
+            border-radius:30px;
+
+            text-decoration:none;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            font-size:2rem;
+            font-weight:bold;
+
+            color:black;
+
+            box-shadow:0 5px 20px rgba(0,0,0,0.15);
+
+            transition:0.3s;
+        }
+
+        .module-btn:hover{
+            transform:translateY(-8px);
+            box-shadow:0 10px 30px rgba(0,0,0,0.25);
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <h1 style="text-align:center;">
-        OS FINALS
-    </h1>
+    <h1 class="title">OS FINALS</h1>
 
-    <div style="text-align:center; margin-top:50px;">
-        <a href="/cpu-scheduling">
-            <button>
-                CPU Scheduling Simulator
-            </button>
+    <p class="subtitle">
+        Operating Systems Simulator
+    </p>
+
+    <div class="button-container">
+
+        <a href="/cpu-scheduling" class="module-btn">
+            CPU SCHEDULING
         </a>
+
+        <!-- Future Button -->
+        <a href="#" class="module-btn">
+            MEMORY MANAGEMENT
+        </a>
+
+        <!-- Future Button -->
+        <a href="#" class="module-btn">
+            VIRTUAL MEMORY
+        </a>
+
+        <!-- Future Button -->
+        <a href="#" class="module-btn">
+            DISK MANAGEMENT
+        </a>
+
     </div>
 
 </body>
