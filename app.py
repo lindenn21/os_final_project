@@ -239,7 +239,10 @@ def round_robin(processes, quantum):
 def index():
     return render_template("index.html")
 
-
+#About page potaenanyo
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 # CPU SCHEDULING PAGE
 

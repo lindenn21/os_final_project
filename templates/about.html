@@ -1,1 +1,116 @@
-# contact info, contributions, profiles
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | WYG,A</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/about.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+{% include 'header.html' %}
+
+<div class="container">
+
+    <section class="hero">
+
+        <span class="badge">
+            About The Project
+        </span>
+
+        <h1>
+            Wherever You Go, Algo.
+        </h1>
+
+        <p>
+            An interactive Operating System Algorithm Simulator
+            designed to make learning OS concepts easier,
+            clearer, and more engaging.
+        </p>
+
+    </section>
+
+    <section class="about-grid">
+
+        <div class="card">
+
+            <h2>🎯 Mission</h2>
+
+            <p>
+                WYG,A aims to bridge the gap between theory and
+                practice by allowing students to explore operating
+                system algorithms through simulation and
+                visualization.
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📚 What You'll Learn</h2>
+
+            <ul>
+                <li>CPU Scheduling Algorithms</li>
+                <li>Memory Management</li>
+                <li>Virtual Memory Systems</li>
+                <li>Disk Scheduling Techniques</li>
+            </ul>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🛠 Technologies Used</h2>
+
+            <ul>
+                <li>Python</li>
+                <li>Flask</li>
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>JavaScript</li>
+            </ul>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🚀 Project Objectives</h2>
+
+            <ul>
+                <li>Visualize algorithm execution</li>
+                <li>Improve conceptual understanding</li>
+                <li>Provide interactive learning tools</li>
+                <li>Support Operating System education</li>
+            </ul>
+
+        </div>
+
+    </section>
+
+    <section class="quote-card">
+
+        <h2>Why "Wherever You Go, Algo."?</h2>
+
+        <p>
+            Algorithms are everywhere in computing.
+            From process scheduling to memory allocation,
+            they quietly shape how operating systems work.
+            Wherever you go in computer science, you'll
+            encounter algorithms.
+        </p>
+
+    </section>
+
+</div>
+
+</body>
+</html># contact info, contributions, profiles
