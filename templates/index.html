@@ -1,106 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CPU Scheduling Simulator</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            margin: 40px;
-        }
-
-        input, select, button {
-            padding: 8px;
-            margin-top: 5px;
-            width: 300px;
-        }
-
-        table {
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-        }
-
-        h2, h3 {
-            margin-top: 20px;
-        }
-    </style>
+    <title>OS Finals</title>
 </head>
 
 <body>
 
-    <h1>CPU Scheduling Simulator</h1>
+    <h1 style="text-align:center;">
+        OS FINALS
+    </h1>
 
-    <form method="POST">
-
-        <label>Arrival Times (comma-separated):</label><br>
-        <input type="text" name="arrival" placeholder="0,1,2,3" required>
-        <br><br>
-
-        <label>Burst Times (comma-separated):</label><br>
-        <input type="text" name="burst" placeholder="5,3,8,6" required>
-        <br><br>
-
-        <label>Priority (comma-separated):</label><br>
-        <input type="text" name="priority" placeholder="2,1,4,3" required>
-        <br><br>
-
-        <label>Algorithm:</label><br>
-        <select name="algorithm">
-            <option value="FCFS">First Come First Serve</option>
-            <option value="SJF">Shortest Job First</option>
-            <option value="PNP">Priority Non-Preemptive</option>
-            <option value="PP">Priority Preemptive</option>
-            <option value="RR">Round Robin</option>
-        </select>
-
-        <br><br>
-
-        <label>Time Quantum (RR only):</label><br>
-        <input type="number" name="quantum" value="2">
-
-        <br><br>
-
-        <button type="submit">Execute</button>
-
-    </form>
-
-
-    {% if results %}
-
-    <h2>Results</h2>
-
-    <table>
-        <tr>
-            <th>PID</th>
-            <th>Arrival</th>
-            <th>Burst</th>
-            <th>Priority</th>
-            <th>Waiting Time</th>
-            <th>Turnaround Time</th>
-        </tr>
-
-        {% for p in results %}
-        <tr>
-            <td>{{ p.pid }}</td>
-            <td>{{ p.arrival }}</td>
-            <td>{{ p.burst }}</td>
-            <td>{{ p.priority }}</td>
-            <td>{{ p.waiting }}</td>
-            <td>{{ p.turnaround }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h3>Average Waiting Time: {{ avg_waiting }}</h3>
-    <h3>Average Turnaround Time: {{ avg_turnaround }}</h3>
-
-    {% endif %}
+    <div style="text-align:center; margin-top:50px;">
+        <a href="/cpu-scheduling">
+            <button>
+                CPU Scheduling Simulator
+            </button>
+        </a>
+    </div>
 
 </body>
 </html>
