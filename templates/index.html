@@ -1,49 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>OS Finals</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wherever You Go, Algo.</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
 
     <link rel="stylesheet"
-      href="{{ url_for('static', filename='css/header.css') }}">
-
-    <link rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}">
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
-{% include 'header.html' %}
+    {% include 'header.html' %}
 
     <div class="container">
-        
-    <h1 class="title">ALGORACISM</h1>
 
-    <p class="subtitle">
-        An Operating System project led by the most racist individual known to mankind
-    </p>
+        <!-- HERO SECTION -->
+        <section class="hero">
 
-    <div class="button-container">
+            <span class="badge">
+                Operating Systems Final Project
+            </span>
 
-        <a href="/cpu-scheduling" class="module-btn">
-            CPU SCHEDULING
-        </a>
+            <h1 class="title">
+                Wherever You Go, Algo.
+            </h1>
 
-        <!-- Future Button -->
-        <a href="#" class="module-btn">
-            MEMORY MANAGEMENT
-        </a>
+            <p class="subtitle">
+                Explore • Visualize • Understand OS Algorithms
+            </p>
 
-        <!-- Future Button -->
-        <a href="#" class="module-btn">
-            VIRTUAL MEMORY
-        </a>
+            <p class="description">
+                Learn and experiment with operating system concepts through
+                interactive simulations of scheduling, memory allocation,
+                virtual memory, and disk management algorithms.
+            </p>
 
-        <!-- Future Button -->
-        <a href="#" class="module-btn">
-            DISK MANAGEMENT
-        </a>
+        </section>
+
+        <!-- MODULES -->
+        <section class="modules">
+
+            <!-- CPU Scheduling -->
+            <a href="/cpu-scheduling" class="module-btn cpu">
+
+                <div class="icon">⚙️</div>
+
+                <h2>CPU Scheduling</h2>
+
+                <p>
+                    FCFS, SJF, Priority Scheduling,
+                    and Round Robin.
+                </p>
+
+                <span class="status">
+                    Available
+                </span>
+
+            </a>
+
+            <!-- Memory Management -->
+            <a href="#" class="module-btn memory">
+
+                <div class="icon">🧠</div>
+
+                <h2>Memory Management</h2>
+
+                <p>
+                    First Fit, Best Fit,
+                    and Worst Fit Allocation.
+                </p>
+
+                <span class="status">
+                    Coming Soon
+                </span>
+
+            </a>
+
+            <!-- Virtual Memory -->
+            <a href="#" class="module-btn virtual">
+
+                <div class="icon">💾</div>
+
+                <h2>Virtual Memory</h2>
+
+                <p>
+                    FIFO, LRU,
+                    and Optimal Page Replacement.
+                </p>
+
+                <span class="status">
+                    Coming Soon
+                </span>
+
+            </a>
+
+            <!-- Disk Management -->
+            <a href="#" class="module-btn disk">
+
+                <div class="icon">📀</div>
+
+                <h2>Disk Management</h2>
+
+                <p>
+                    FCFS, SSTF,
+                    SCAN, and C-SCAN.
+                </p>
+
+                <span class="status">
+                    Coming Soon
+                </span>
+
+            </a>
+
+        </section>
 
     </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            Wherever You Go, Algo. • Operating System Algorithm Simulator
+        </p>
+    </footer>
 
 </body>
 </html>
