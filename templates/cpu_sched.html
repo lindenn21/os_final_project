@@ -4,83 +4,195 @@
     <title>CPU Scheduling Simulator</title>
 
     <style>
-        body {
-            font-family: Arial;
-            margin: 40px;
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
         }
 
-        input, select, button {
-            padding: 8px;
-            margin-top: 5px;
-            width: 300px;
+        body{
+            background:#f4f6f9;
+            padding:40px;
         }
 
-        table {
-            border-collapse: collapse;
-            margin-top: 20px;
+        .container{
+            max-width:1200px;
+            margin:auto;
         }
 
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
+        h1{
+            text-align:center;
+            font-size:3rem;
+            margin-bottom:30px;
         }
 
-        h2, h3 {
-            margin-top: 20px;
+        .back-btn{
+            display:inline-block;
+            text-decoration:none;
+            margin-bottom:20px;
         }
+
+        .back-btn button{
+            padding:12px 24px;
+            border:none;
+            border-radius:12px;
+            cursor:pointer;
+            font-size:1rem;
+        }
+
+        .form-card{
+            background:white;
+            padding:40px;
+            border-radius:25px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        label{
+            display:block;
+            margin-top:20px;
+            margin-bottom:8px;
+            font-size:1.2rem;
+            font-weight:bold;
+        }
+
+        input,
+        select{
+            width:100%;
+            padding:18px;
+            font-size:1.1rem;
+            border:1px solid #ccc;
+            border-radius:12px;
+        }
+
+        .execute-btn{
+            width:100%;
+            margin-top:30px;
+            padding:20px;
+            font-size:1.3rem;
+            font-weight:bold;
+            border:none;
+            border-radius:15px;
+            cursor:pointer;
+        }
+
+        h2{
+            text-align:center;
+            margin-top:40px;
+            margin-bottom:20px;
+            font-size:2rem;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:20px;
+            overflow:hidden;
+            box-shadow:0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        th{
+            padding:18px;
+            font-size:1.1rem;
+        }
+
+        td{
+            padding:16px;
+            text-align:center;
+            font-size:1rem;
+        }
+
+        th,
+        td{
+            border:1px solid #ddd;
+        }
+
+        .averages{
+            margin-top:25px;
+            text-align:center;
+        }
+
+        .averages h3{
+            font-size:1.4rem;
+            margin-top:10px;
+        }
+
     </style>
 </head>
 
 <body>
 
-    <h1>CPU Scheduling Simulator</h1>
+<div class="container">
 
-    <a href="/">
+    <a href="/" class="back-btn">
         <button>← Back to Home</button>
     </a>
 
-    <br><br>
+    <h1>CPU Scheduling Simulator</h1>
 
-    <form method="POST">
+    <div class="form-card">
 
-        <label>Arrival Times (comma-separated):</label><br>
-        <input type="text" name="arrival" placeholder="0,1,2,3" required>
-        <br><br>
+        <form method="POST">
 
-        <label>Burst Times (comma-separated):</label><br>
-        <input type="text" name="burst" placeholder="5,3,8,6" required>
-        <br><br>
+            <label>Arrival Times (comma-separated)</label>
+            <input
+                type="text"
+                name="arrival"
+                placeholder="0,1,2,3"
+                required
+            >
 
-        <label>Priority (comma-separated):</label><br>
-        <input type="text" name="priority" placeholder="2,1,4,3" required>
-        <br><br>
+            <label>Burst Times (comma-separated)</label>
+            <input
+                type="text"
+                name="burst"
+                placeholder="5,3,8,6"
+                required
+            >
 
-        <label>Algorithm:</label><br>
-        <select name="algorithm">
-            <option value="FCFS">First Come First Serve</option>
-            <option value="SJF">Shortest Job First</option>
-            <option value="PNP">Priority Non-Preemptive</option>
-            <option value="PP">Priority Preemptive</option>
-            <option value="RR">Round Robin</option>
-        </select>
+            <label>Priority (comma-separated)</label>
+            <input
+                type="text"
+                name="priority"
+                placeholder="2,1,4,3"
+                required
+            >
 
-        <br><br>
+            <label>Algorithm</label>
+            <select name="algorithm">
+                <option value="FCFS">First Come First Serve</option>
+                <option value="SJF">Shortest Job First</option>
+                <option value="PNP">Priority Non-Preemptive</option>
+                <option value="PP">Priority Preemptive</option>
+                <option value="RR">Round Robin</option>
+            </select>
 
-        <label>Time Quantum (RR only):</label><br>
-        <input type="number" name="quantum" value="2">
+            <label>Time Quantum (Round Robin Only)</label>
+            <input
+                type="number"
+                name="quantum"
+                value="2"
+            >
 
-        <br><br>
+            <button
+                type="submit"
+                class="execute-btn"
+            >
+                Execute Scheduling Algorithm
+            </button>
 
-        <button type="submit">Execute</button>
+        </form>
 
-    </form>
+    </div>
 
     {% if results %}
 
     <h2>Results</h2>
 
     <table>
+
         <tr>
             <th>PID</th>
             <th>Arrival</th>
@@ -91,6 +203,7 @@
         </tr>
 
         {% for p in results %}
+
         <tr>
             <td>{{ p.pid }}</td>
             <td>{{ p.arrival }}</td>
@@ -99,13 +212,28 @@
             <td>{{ p.waiting }}</td>
             <td>{{ p.turnaround }}</td>
         </tr>
+
         {% endfor %}
+
     </table>
 
-    <h3>Average Waiting Time: {{ avg_waiting }}</h3>
-    <h3>Average Turnaround Time: {{ avg_turnaround }}</h3>
+    <div class="averages">
+
+        <h3>
+            Average Waiting Time:
+            {{ "%.2f"|format(avg_waiting) }}
+        </h3>
+
+        <h3>
+            Average Turnaround Time:
+            {{ "%.2f"|format(avg_turnaround) }}
+        </h3>
+
+    </div>
 
     {% endif %}
+
+</div>
 
 </body>
 </html>
