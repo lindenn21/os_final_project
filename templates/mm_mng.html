@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Memory Management Simulator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/mm_mng.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
+    
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+
+{% include 'header.html' %}
+
+
+<div class="container">
+
+    <a href="/" class="back-btn">
+        ← Back to Home
+    </a>
+    <h1>Memory Allocation Simulator</h1>
+
+    <form method="POST">
+
+        <label>Memory Holes (comma separated)</label>
+
+        <input
+            type="text"
+            name="blocks"
+            placeholder="100,200,300"
+            required>
+
+        <label>Incoming Job Size (K)</label>
+
+        <input
+            type="number"
+            name="job_size"
+            required>
+
+        <label>Allocation Algorithm</label>
+
+        <select name="algorithm">
+
+            <option value="FIRST">
+                First Fit
+            </option>
+
+            <option value="BEST">
+                Best Fit
+            </option>
+
+            <option value="WORST">
+                Worst Fit
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Allocate Memory
+        </button>
+
+    </form>
+
+    {% if memory_blocks %}
+
+    <div class="results">
+
+        <h2>Memory Holes</h2>
+
+        {% for block in memory_blocks %}
+
+            {% if allocation_result and
+                  block|string in allocation_result %}
+
+                <div class="memory job">
+                    {{ block }}K [JOB]
+                </div>
+
+            {% else %}
+
+                <div class="memory free">
+                    {{ block }}K [FREE]
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+        <h2>{{ allocation_result }}</h2>
+
+    </div>
+
+    {% endif %}
+
+    <hr>
+
+    <h2>RAM Visualization</h2>
+
+    <div class="ram">
+
+        <div class="segment os">
+            OS
+        </div>
+
+        <div class="segment process">
+            Process A
+        </div>
+
+        <div class="segment process">
+            Process B
+        </div>
+
+        <div class="segment free">
+            Free
+        </div>
+
+        <div class="segment process">
+            Process C
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

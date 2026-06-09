@@ -310,5 +310,87 @@ def cpu_scheduling():
     )
 
 
+# MEMORY MANAGEMENT PAGE
+
+@app.route("/memory-management", methods=["GET", "POST"])
+def memory_management():
+
+    memory_blocks = []
+    job_size = None
+    algorithm = None
+    allocation_result = ""
+
+    if request.method == "POST":
+
+        try:
+
+            memory_blocks = [
+                int(x.strip())
+                for x in request.form["blocks"].split(",")
+            ]
+
+            job_size = int(
+                request.form["job_size"]
+            )
+
+            algorithm = request.form["algorithm"]
+
+            chosen_index = -1
+
+            # FIRST FIT
+            if algorithm == "FIRST":
+
+                for i, block in enumerate(memory_blocks):
+
+                    if block >= job_size:
+                        chosen_index = i
+                        break
+
+            # BEST FIT
+            elif algorithm == "BEST":
+
+                best_size = float("inf")
+
+                for i, block in enumerate(memory_blocks):
+
+                    if block >= job_size and block < best_size:
+                        best_size = block
+                        chosen_index = i
+
+            # WORST FIT
+            elif algorithm == "WORST":
+
+                worst_size = -1
+
+                for i, block in enumerate(memory_blocks):
+
+                    if block >= job_size and block > worst_size:
+                        worst_size = block
+                        chosen_index = i
+
+            if chosen_index != -1:
+
+                allocation_result = (
+                    f"Job allocated to "
+                    f"{memory_blocks[chosen_index]}K block"
+                )
+
+            else:
+
+                allocation_result = (
+                    "No suitable memory block found."
+                )
+
+        except Exception as e:
+            print("ERROR:", e)
+
+    return render_template(
+        "mm_mng.html",
+        memory_blocks=memory_blocks,
+        job_size=job_size,
+        algorithm=algorithm,
+        allocation_result=allocation_result
+    )
+
 if __name__ == "__main__":
     app.run(debug=True)
