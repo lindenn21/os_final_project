@@ -75,31 +75,30 @@
 
     <div class="results">
 
-        <h2>Memory Holes</h2>
+    <h2>Memory Layout After Allocation</h2>
 
-        {% for block in memory_blocks %}
+    {% for block in memory_map %}
 
-            {% if allocation_result and
-                  block|string in allocation_result %}
+        {% if block.status == "JOB" %}
 
-                <div class="memory job">
-                    {{ block }}K [JOB]
-                </div>
+            <div class="memory job">
+                {{ block.size }}K [JOB]
+            </div>
 
-            {% else %}
+        {% else %}
 
-                <div class="memory free">
-                    {{ block }}K [FREE]
-                </div>
+            <div class="memory free">
+                {{ block.size }}K [FREE]
+            </div>
 
-            {% endif %}
+        {% endif %}
 
-        {% endfor %}
+    {% endfor %}
 
-        <h2>{{ allocation_result }}</h2>
+    <h2>{{ allocation_result }}</h2>
 
-    </div>
-
+</div>
+        
     {% endif %}
 
     <hr>
@@ -108,21 +107,29 @@
 
     <div class="ram">
 
-        <div class="segment os">
-            OS
-        </div>
+    <div class="segment os">
+        OS
+    </div>
 
-        <div class="segment process">
-            Process A
-        </div>
+    {% for block in memory_map %}
 
-        <div class="segment process">
-            Process B
-        </div>
+        {% if block.status == "JOB" %}
 
-        <div class="segment free">
-            Free
-        </div>
+            <div class="segment process">
+                {{ block.size }}K JOB
+            </div>
+
+        {% else %}
+
+            <div class="segment free">
+                {{ block.size }}K FREE
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+</div>
 
         <div class="segment process">
             Process C

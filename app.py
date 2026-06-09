@@ -316,6 +316,7 @@ def cpu_scheduling():
 def memory_management():
 
     memory_blocks = []
+    memory_map = []
     job_size = None
     algorithm = None
     allocation_result = ""
@@ -370,10 +371,36 @@ def memory_management():
 
             if chosen_index != -1:
 
+                selected_block = memory_blocks[chosen_index]
+                remaining = selected_block - job_size
+
                 allocation_result = (
-                    f"Job allocated to "
-                    f"{memory_blocks[chosen_index]}K block"
+                    f"Job allocated to {selected_block}K block "
+                    f"({remaining}K remaining)"
                 )
+
+                for i, block in enumerate(memory_blocks):
+
+                    if i == chosen_index:
+
+                        memory_map.append({
+                            "size": job_size,
+                            "status": "JOB"
+                        })
+
+                        if remaining > 0:
+
+                            memory_map.append({
+                                "size": remaining,
+                                "status": "FREE"
+                            })
+
+                    else:
+
+                        memory_map.append({
+                            "size": block,
+                            "status": "FREE"
+                        })
 
             else:
 
@@ -381,12 +408,21 @@ def memory_management():
                     "No suitable memory block found."
                 )
 
+                for block in memory_blocks:
+
+                    memory_map.append({
+                        "size": block,
+                        "status": "FREE"
+                    })
+
         except Exception as e:
+
             print("ERROR:", e)
 
     return render_template(
         "mm_mng.html",
         memory_blocks=memory_blocks,
+        memory_map=memory_map,
         job_size=job_size,
         algorithm=algorithm,
         allocation_result=allocation_result
