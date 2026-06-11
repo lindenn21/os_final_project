@@ -428,5 +428,119 @@ def memory_management():
         allocation_result=allocation_result
     )
 
+# VIRTUAL MEMORY MANAGEMENT PAGE
+
+@app.route("/virtual-memory", methods=["GET", "POST"])
+def virtual_memory():
+
+    frames = None
+    reference_string = []
+    algorithm = ""
+    memory = []
+
+    history = []
+    page_faults = 0
+    page_hits = 0
+    
+    if request.method == "POST":
+
+        try:
+
+            frames = int(request.form["frames"])
+            reference_string = [
+                int(x.strip())
+                for x in request.form["reference"].split(",")
+            ]
+
+            algorithm = request.form["algorithm"]
+
+            memory = []
+            history = []
+
+            for page in reference_string:
+
+                if page in memory:
+                    page_hits += 1
+                    history.append({
+                        "page": page,
+                        "status": "HIT",
+                        "memory": memory.copy()
+                    })
+
+                else:
+                    page_faults += 1
+
+                    if len(memory) < frames:
+                        memory.append(page)
+
+                    else:
+                        if algorithm == "FIFO":
+                            memory.pop(0)
+                            memory.append(page)
+
+                        elif algorithm == "LRU":
+
+                            least_recent = float("inf")
+                            lru_page = None
+
+                            for mem_page in memory:
+
+                                last_used = -1
+
+                                for i in range(len(history)-1, -1, -1):
+
+                                    if history[i]["page"] == mem_page:
+                                        last_used = i
+                                        break
+
+                                if last_used < least_recent:
+                                    least_recent = last_used
+                                    lru_page = mem_page
+
+                            memory.remove(lru_page)
+                            memory.append(page)
+
+                        elif algorithm == "Optimal":
+
+                            farthest = -1
+                            optimal_page = None
+
+                            for mem_page in memory:
+
+                                next_use = float("inf")
+
+                                for i in range(len(history), len(reference_string)):
+
+                                    if reference_string[i] == mem_page:
+                                        next_use = i
+                                        break
+
+                                if next_use > farthest:
+                                    farthest = next_use
+                                    optimal_page = mem_page
+
+                            memory.remove(optimal_page)
+                            memory.append(page)
+
+                    history.append({
+                        "page": page,
+                        "status": "FAULT",
+                        "memory": memory.copy()
+                    })
+
+        except Exception as e:
+            print("ERROR:", e)
+
+    return render_template(
+        "virtual_mem.html",
+        frames=frames,
+        reference_string=reference_string,
+        algorithm=algorithm,
+        memory=memory,
+        history=history,
+        page_faults=page_faults,
+        page_hits=page_hits
+    )
+
 if __name__ == "__main__":
     app.run(debug=True)

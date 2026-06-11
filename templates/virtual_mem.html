@@ -7,7 +7,7 @@
     <title>Virtual Memory Simulator</title>
 
     <link rel="stylesheet"href="{{ url_for('static', filename='css/header.css') }}">
-    <link rel="stylesheet"href="{{ url_for('static', filename='css/virtual_memory.css') }}">
+    <link rel="stylesheet"href="{{ url_for('static', filename='css/virtual_mem.css') }}">
 
 </head>  
 <body>
@@ -19,115 +19,71 @@
     <a href="/" class="back-btn">
         ← Back to Home
     </a>
-    <h1>Memory Allocation Simulator</h1>
+    <h1>Virtual Memory Simulator</h1>
 
     <form method="POST">
 
-        <label>Memory Holes (comma separated)</label>
-
-        <input
-            type="text"
-            name="blocks"
-            placeholder="100,200,300"
-            required>
-
-        <label>Incoming Job Size (K)</label>
+        <label>Number of Frames</label>
 
         <input
             type="number"
-            name="job_size"
+            name="frames"
+            placeholder="3"
+            required>
+
+        <label>Reference String (comma separated)</label>
+
+        <input
+            type="text"
+            name="reference"
+            placeholder="1,2,3,4,1,2,5,1,2,3,4,5"
             required>
 
         <label>Allocation Algorithm</label>
 
         <select name="algorithm">
+            <option value="FIFO">First-In-First-Out (FIFO)</option>
 
-            <option value="FIRST">
-                First Fit
-            </option>
+            <option value="LRU">Least Recently Used (LRU)</option>
 
-            <option value="BEST">
-                Best Fit
-            </option>
-
-            <option value="WORST">
-                Worst Fit
-            </option>
+            <option value="Optimal">Optimal</option>
 
         </select>
 
         <button type="submit">
-            Allocate Memory
+            Simulate
         </button>
 
     </form>
 
-    {% if memory_blocks %}
+    {% if history %}
 
     <div class="results">
 
-    <h2>Memory Layout After Allocation</h2>
-
-    {% for block in memory_map %}
-
-        {% if block.status == "JOB" %}
-
-            <div class="memory job">
-                {{ block.size }}K [JOB]
-            </div>
-
-        {% else %}
-
-            <div class="memory free">
-                {{ block.size }}K [FREE]
-            </div>
-
-        {% endif %}
-
-    {% endfor %}
-
-    <h2>{{ allocation_result }}</h2>
-
+    <h2>Simulation Results</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Step</th>
+                <th>Reference</th>
+                <th>Memory State</th>
+                <th>Page Fault</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for step in history %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ step.page }}</td>
+                <td>{{ step.memory }}</td>
+                <td>{{ step.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
 </div>
-        
+        </tbody>
+    </table>
+
+    </div>
+
     {% endif %}
-
-    <hr>
-
-    <h2>RAM Visualization</h2>
-
-    <div class="ram">
-
-    <div class="segment os">
-        OS
-    </div>
-
-    {% for block in memory_map %}
-
-        {% if block.status == "JOB" %}
-
-            <div class="segment process">
-                {{ block.size }}K JOB
-            </div>
-
-        {% else %}
-
-            <div class="segment free">
-                {{ block.size }}K FREE
-            </div>
-
-        {% endif %}
-
-    {% endfor %}
-
-</div>
-
-        <div class="segment process">
-            Process C
-        </div>
-
-    </div>
-
-</div>
-</body>
-</html>
