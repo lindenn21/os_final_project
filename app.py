@@ -1,3 +1,5 @@
+from turtle import left
+
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -541,6 +543,165 @@ def virtual_memory():
         page_faults=page_faults,
         page_hits=page_hits
     )
+
+# DISK MANAGEMENT PAGE
+
+@app.route("/disk-management", methods=["GET", "POST"])
+def disk_management():
+
+    seek_sequence = []
+    total_seek = 0  
+    algorithm = "" 
+    direction = ""
+
+    if request.method == "POST":
+
+        tracks = int(request.form["tracks"])
+        initial_head = int(request.form["initial_head"])
+
+        if not (0 <= initial_head < tracks):
+            raise ValueError("Invalid initial head position")
+
+        raw_requests = request.form["requests"].split(",")
+        
+        requests = []
+        for r in raw_requests:
+            try:
+                req = int(r.strip())
+                if 0 <= req < tracks:
+                    requests.append(req)
+            except ValueError:
+                continue
+
+        algorithm = request.form["algorithm"]
+        direction = request.form["direction"]
+
+        current = initial_head
+
+        if algorithm == "FCFS":
+
+            seek_sequence = [initial_head]
+
+            for req in requests:
+
+                total_seek += abs(current - req)
+
+                seek_sequence.append(req)
+
+                current = req
+
+        elif algorithm == "SSTF":
+
+            seek_sequence = [initial_head]
+
+            pending = requests.copy()
+
+            while pending:
+
+                closest = min(
+                    pending,
+                    key=lambda x: abs(current - x)
+                )
+
+                total_seek += abs(current - closest)
+
+                seek_sequence.append(closest)
+
+                current = closest
+
+                pending.remove(closest)
+
+        elif algorithm == "SCAN":
+
+            left = sorted([r for r in requests if r < initial_head])
+            right = sorted([r for r in requests if r >= initial_head])
+
+            seek_sequence = [initial_head]
+
+            if direction == "RIGHT":
+
+                for r in right:
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+                if current != tracks - 1:
+                    total_seek += abs(current - (tracks - 1))
+                    current = tracks - 1
+                    seek_sequence.append(current)
+
+                for r in reversed(left):
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+            else:
+                for r in reversed(left):
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+                if current != 0:
+                    total_seek += abs(current - 0)
+                    current = 0
+                    seek_sequence.append(current)
+
+                for r in right:
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+        elif algorithm == "C-SCAN":
+
+            left = sorted([r for r in requests if r < initial_head])
+            right = sorted([r for r in requests if r > initial_head])
+
+            seek_sequence = [initial_head]
+
+            if direction == "RIGHT":
+
+                for r in right:
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+                total_seek += abs(current - (tracks - 1))
+                current = tracks - 1
+                seek_sequence.append(current)
+
+                total_seek += abs(current - 0)
+                current = 0
+                seek_sequence.append(current)
+
+                for r in left:
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+            else:
+                for r in reversed(left):
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+                total_seek += abs(current - 0)
+                current = 0
+                seek_sequence.append(current)
+
+                total_seek += abs(current - (tracks - 1))
+                current = tracks - 1
+                seek_sequence.append(current)
+
+                for r in reversed(right):
+                    total_seek += abs(current - r)
+                    current = r
+                    seek_sequence.append(r)
+
+    return render_template("disk_management.html",
+                            seek_sequence=seek_sequence,
+                            total_seek=total_seek,
+                            algorithm=algorithm,
+                            direction=direction)
 
 if __name__ == "__main__":
     app.run(debug=True)
