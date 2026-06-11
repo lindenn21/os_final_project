@@ -1,0 +1,121 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, sans-serif;
+
+    background:#f4f4f4;
+
+}
+
+
+
+.container{
+
+    max-width:900px;
+
+    margin:40px auto;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:12px;
+
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+
+    text-align:center;
+
+    margin-bottom:25px;
+}
+
+form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+}
+
+input,
+select,
+button{
+
+    padding:12px;
+
+    font-size:16px;
+}
+
+button{
+
+    cursor:pointer;
+}
+
+.results{
+
+    margin-top:30px;
+}
+
+.memory{
+
+    padding:15px;
+
+    margin-bottom:10px;
+
+    border-radius:8px;
+
+    text-align:center;
+
+    font-weight:bold;
+}
+
+.free{
+
+    background:#dff0d8;
+}
+
+.job{
+
+    background:#f8d7da;
+}
+
+.ram{
+
+    width:250px;
+
+    margin:30px auto;
+
+    border:3px solid black;
+}
+
+.segment{
+
+    border-bottom:2px solid black;
+
+    text-align:center;
+
+    padding:25px;
+}
+
+.segment:last-child{
+
+    border-bottom:none;
+}
+
+.os{
+
+    background:#cccccc;
+}
+
+.process{
+
+    background:#9ecfff;
+}
