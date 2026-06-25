@@ -319,9 +319,10 @@ def memory_management():
 
     memory_blocks = []
     memory_map = []
-    job_size = None
+    ram_segments = []
+    job_sizes = []
     algorithm = None
-    allocation_result = ""
+    job_results = []
 
     if request.method == "POST":
 
@@ -332,102 +333,108 @@ def memory_management():
                 for x in request.form["blocks"].split(",")
             ]
 
-            job_size = int(
-                request.form["job_size"]
-            )
+            job_sizes = [
+                int(x.strip())
+                for x in request.form["job_size"].split(",")
+            ]
 
             algorithm = request.form["algorithm"]
 
-            chosen_index = -1
+            current_holes = memory_blocks.copy()
 
-            # FIRST FIT
-            if algorithm == "FIRST":
+            ram_segments = [
+                {"size": b, "status": "FREE"} for b in memory_blocks
+            ]
 
-                for i, block in enumerate(memory_blocks):
+            for job_size in job_sizes:
 
-                    if block >= job_size:
-                        chosen_index = i
-                        break
+                chosen_index = -1
 
-            # BEST FIT
-            elif algorithm == "BEST":
+                # FIRST FIT
+                if algorithm == "FIRST":
 
-                best_size = float("inf")
+                    for i, block in enumerate(current_holes):
 
-                for i, block in enumerate(memory_blocks):
+                        if block >= job_size:
+                            chosen_index = i
+                            break
 
-                    if block >= job_size and block < best_size:
-                        best_size = block
-                        chosen_index = i
+                # BEST FIT
+                elif algorithm == "BEST":
 
-            # WORST FIT
-            elif algorithm == "WORST":
+                    best_size = float("inf")
 
-                worst_size = -1
+                    for i, block in enumerate(current_holes):
 
-                for i, block in enumerate(memory_blocks):
+                        if block >= job_size and block < best_size:
+                            best_size = block
+                            chosen_index = i
 
-                    if block >= job_size and block > worst_size:
-                        worst_size = block
-                        chosen_index = i
+                # WORST FIT
+                elif algorithm == "WORST":
 
-            if chosen_index != -1:
+                    worst_size = -1
 
-                selected_block = memory_blocks[chosen_index]
-                remaining = selected_block - job_size
+                    for i, block in enumerate(current_holes):
 
-                allocation_result = (
-                    f"Job allocated to {selected_block}K block "
-                    f"({remaining}K remaining)"
-                )
+                        if block >= job_size and block > worst_size:
+                            worst_size = block
+                            chosen_index = i
 
-                for i, block in enumerate(memory_blocks):
+                if chosen_index != -1:
 
-                    if i == chosen_index:
+                    selected_block = current_holes[chosen_index]
+                    remaining = selected_block - job_size
 
-                        memory_map.append({
-                            "size": job_size,
-                            "status": "JOB"
-                        })
-
-                        if remaining > 0:
-
-                            memory_map.append({
-                                "size": remaining,
-                                "status": "FREE"
-                            })
-
-                    else:
-
-                        memory_map.append({
-                            "size": block,
-                            "status": "FREE"
-                        })
-
-            else:
-
-                allocation_result = (
-                    "No suitable memory block found."
-                )
-
-                for block in memory_blocks:
-
-                    memory_map.append({
-                        "size": block,
-                        "status": "FREE"
+                    job_results.append({
+                        "size": job_size,
+                        "message": f"Allocated in block of size {selected_block}K. Remaining: {remaining}K."
                     })
 
-        except Exception as e:
+                    if remaining > 0:
+                        current_holes[chosen_index] = remaining
+                    else:
+                        current_holes.pop(chosen_index)
 
+                    for segment in ram_segments:
+
+                        if segment["status"] == "FREE" and segment["size"] == selected_block:
+
+                            segment["status"] = "JOB"
+                            segment["size"] = job_size
+                            if remaining > 0:
+                            
+                                idx = ram_segments.index(segment)
+                                ram_segments.insert(idx + 1, {
+                                    "size": remaining,
+                                    "status": "FREE"
+                                })
+                            break
+                
+                else:
+                    job_results.append({
+                        "size": job_size,
+                        "message": "No suitable memory block found."
+                    })
+
+            for block in current_holes:
+                memory_map.append({
+                    "size": block,
+                    "status": "FREE"
+                })
+                
+        except Exception as e:
+            
             print("ERROR:", e)
 
     return render_template(
         "mm_mng.html",
         memory_blocks=memory_blocks,
         memory_map=memory_map,
-        job_size=job_size,
+        ram_segments=ram_segments,
+        job_sizes=job_sizes,
         algorithm=algorithm,
-        allocation_result=allocation_result
+        job_results=job_results
     )
 
 # VIRTUAL MEMORY MANAGEMENT PAGE

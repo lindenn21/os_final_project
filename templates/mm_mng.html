@@ -42,8 +42,9 @@
         <label>Incoming Job Size (K)</label>
 
         <input
-            type="number"
+            type="text"
             name="job_size"
+            placeholder="50,80,120"
             required>
 
         <label>Allocation Algorithm</label>
@@ -74,7 +75,13 @@
 
     <div class="results">
 
-    <h2>Memory Layout After Allocation</h2>
+    <h2>Allocation Results</h2>
+
+    {% for result in job_results %}
+        <h3>Job {{ loop.index }} ({{ result.size }}K): {{ result.message }}</h3>
+    {% endfor %}
+
+    <h2>Final Memory Layout</h2>
 
     {% for block in memory_map %}
 
@@ -110,7 +117,7 @@
         OS
     </div>
 
-    {% for block in memory_map %}
+    {% for block in ram_segments %}
 
         {% if block.status == "JOB" %}
 
@@ -129,13 +136,6 @@
     {% endfor %}
 
 </div>
-
-        <div class="segment process">
-            Process C
-        </div>
-
-    </div>
-
 </div>
 </body>
 </html>
