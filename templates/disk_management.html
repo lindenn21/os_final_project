@@ -6,10 +6,11 @@
 
     <title>Disk Management</title>
 
-    <link rel="stylesheet"href="{{ url_for('static', filename='css/header.css') }}">
-    <link rel="stylesheet"href="{{ url_for('static', filename='css/disk_management.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/disk_management.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 
-</head>  
+</head>
 <body>
 
 {% include 'header.html' %}
@@ -54,7 +55,6 @@
             <option value="SSTF">Shortest Seek Time First (SSTF)</option>
             <option value="SCAN">SCAN (Elevator)</option>
             <option value="C-SCAN">Circular SCAN (C-SCAN)</option>
-
         </select>
 
         <label>Direction (Used only for SCAN and C-SCAN)</label>
@@ -62,7 +62,6 @@
         <select name="direction">
             <option value="LEFT">Left</option>
             <option value="RIGHT">Right</option>
-
         </select>
 
         <button type="submit">
@@ -77,28 +76,50 @@
 
     <h2>Simulation Results</h2>
 
+    <div class="metrics">
+        <div class="metric-card">
+            <div class="metric-label">Algorithm</div>
+            <div class="metric-value">{{ algorithm }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Total Head Movement</div>
+            <div class="metric-value">{{ total_seek }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Steps</div>
+            <div class="metric-value">{{ seek_sequence|length - 1 }}</div>
+        </div>
+    </div>
+
     <p>
         <strong>Seek Sequence:</strong>
         {{ seek_sequence }}
     </p>
 
-    <p>
-        <strong>Total Head Movement:</strong>
-        {{ total_seek }}
-    </p>
+    <div class="chart-wrap">
+        <canvas id="seekChart" role="img" aria-label="Line chart showing disk head movement across track positions"></canvas>
+    </div>
 
     <table>
 
         <tr>
             <th>Step</th>
             <th>Track</th>
+            <th>Seek Distance</th>
         </tr>
 
         {% for track in seek_sequence %}
 
         <tr>
-            <td>{{ loop.index }}</td>
+            <td>{{ loop.index0 }}</td>
             <td>{{ track }}</td>
+            <td>
+                {% if loop.index0 == 0 %}
+                    —
+                {% else %}
+                    {{ (track - seek_sequence[loop.index0 - 1])|abs }}
+                {% endif %}
+            </td>
         </tr>
 
         {% endfor %}
@@ -106,6 +127,45 @@
     </table>
 
 </div>
+
+<script>
+    const seq = {{ seek_sequence | tojson }};
+    const labels = seq.map((_, i) => `Step ${i}`);
+
+    new Chart(document.getElementById('seekChart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Head position',
+                data: seq,
+                borderColor: '#185FA5',
+                backgroundColor: '#185FA522',
+                pointBackgroundColor: seq.map((_, i) => i === 0 ? '#BA7517' : '#185FA5'),
+                pointRadius: seq.map((_, i) => i === 0 ? 7 : 4),
+                tension: 0,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => `Track: ${ctx.parsed.y}` } }
+            },
+            scales: {
+                y: {
+                    title: { display: true, text: 'Track number' }
+                },
+                x: {
+                    title: { display: true, text: 'Seek step' },
+                    ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 12 }
+                }
+            }
+        }
+    });
+</script>
 
 {% endif %}
 

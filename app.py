@@ -550,8 +550,8 @@ def virtual_memory():
 def disk_management():
 
     seek_sequence = []
-    total_seek = 0  
-    algorithm = "" 
+    total_seek = 0
+    algorithm = ""
     direction = ""
 
     if request.method == "POST":
@@ -563,7 +563,7 @@ def disk_management():
             raise ValueError("Invalid initial head position")
 
         raw_requests = request.form["requests"].split(",")
-        
+
         requests = []
         for r in raw_requests:
             try:
@@ -702,6 +702,7 @@ def disk_management():
                             total_seek=total_seek,
                             algorithm=algorithm,
                             direction=direction)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
