@@ -322,6 +322,7 @@ def memory_management():
     ram_segments = []
     job_sizes = []
     algorithm = None
+    algorithm_label = None
     job_results = []
 
     if request.method == "POST":
@@ -339,6 +340,14 @@ def memory_management():
             ]
 
             algorithm = request.form["algorithm"]
+
+            algorithm_labels = {
+                "FIRST": "First Fit",
+                "BEST": "Best Fit",
+                "WORST": "Worst Fit"
+            }
+    
+            algorithm_label = algorithm_labels.get(algorithm)
 
             current_holes = memory_blocks.copy()
 
@@ -434,6 +443,7 @@ def memory_management():
         ram_segments=ram_segments,
         job_sizes=job_sizes,
         algorithm=algorithm,
+        algorithm_label=algorithm_label,
         job_results=job_results
     )
 

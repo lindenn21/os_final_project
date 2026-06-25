@@ -29,7 +29,16 @@
     <a href="/" class="back-btn">
         ← Back to Home
     </a>
+
+    <div class="hero">
     <h1>Memory Allocation Simulator</h1>
+    </div>
+
+        <div class="dashboard-grid">
+
+        <!-- LEFT CARD -->
+
+        <div class="form-card">
 
             <form method="POST">
 
@@ -44,27 +53,22 @@
                 <label>Incoming Job Size (K)</label>
 
                 <input
-                    type="number"
+                    type="text"
                     name="job_size"
-                    placeholder="212"
+                    placeholder="80,150,250"
                     required>
-        <input
-            type="text"
-            name="job_size"
-            placeholder="50,80,120"
-            required>
-
+        
                 <label>Allocation Algorithm</label>
 
                 <select name="algorithm">
 
-            <option value="FIRST">
-                First Fit
-            </option>
+                    <option value="FIRST">
+                        First Fit
+                    </option>
 
-            <option value="BEST">
-                Best Fit
-            </option>
+                    <option value="BEST">
+                        Best Fit
+                    </option>
 
                     <option value="WORST">
                         Worst Fit
@@ -119,48 +123,13 @@
                     memory block first.
                 </p>
 
-<<<<<<< HEAD
-</div>
-        
-    {% endif %}
-
-    <hr>
-
-    <h2>RAM Visualization</h2>
-
-    <div class="ram">
-
-    <div class="segment os">
-        OS
-    </div>
-
-    {% for block in ram_segments %}
-
-        {% if block.status == "JOB" %}
-
-            <div class="segment process">
-                {{ block.size }}K JOB
-            </div>
-
-        {% else %}
-
-            <div class="segment free">
-                {{ block.size }}K FREE
-            </div>
-
-        {% endif %}
-
-    {% endfor %}
-
-</div>
-=======
             </div>
 
         </div>
 
     </div>
 
-    {% if memory_blocks %}
+    {% if job_results %}
 
     <section class="results-section">
 
@@ -168,29 +137,14 @@
 
         <div class="table-card">
 
-            <h3>{{ allocation_result }}</h3>
+            <h3>Algorithm: {{ algorithm_label }}</h3>
 
-            {% for block in memory_map %}
+            {% for result in job_results %}
 
-                {% if block.status == "JOB" %}
-
-                    <div class="memory job">
-
-                        Process Allocated:
-                        {{ block.size }}K
-
-                    </div>
-
-                {% else %}
-
-                    <div class="memory free">
-
-                        Free Memory:
-                        {{ block.size }}K
-
-                    </div>
-
-                {% endif %}
+                <div class="memory job">
+                    Job {{ result.size }}K —
+                    {{ result.message }}
+                </div>
 
             {% endfor %}
 
@@ -206,15 +160,15 @@
                     Operating System
                 </div>
 
-                {% for block in memory_map %}
+                {% for segment in ram_segments %}
 
-                    {% if block.status == "JOB" %}
+                    {% if segment.status == "JOB" %}
 
                         <div class="segment process">
 
                             Process
                             <br>
-                            {{ block.size }}K
+                            {{ segment.size }}K
 
                         </div>
 
@@ -224,7 +178,7 @@
 
                             Free
                             <br>
-                            {{ block.size }}K
+                            {{ segment.size }}K
 
                         </div>
 
@@ -240,7 +194,6 @@
 
     {% endif %}
 
->>>>>>> dbb03e1eabe66a844ff25a288da364d72bdc1333
 </div>
 
 </body>
