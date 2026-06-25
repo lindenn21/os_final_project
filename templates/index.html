@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wherever You Go, Algo.</title>
 
-    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- CSS Files -->
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/header.css') }}">
 
@@ -19,118 +18,191 @@
 
 <body>
 
-    {% include 'header.html' %}
+{% include 'header.html' %}
 
-    <div class="container">
+<div class="container">
 
-        <!-- HERO SECTION -->
-        <section class="hero">
+    <!-- HERO -->
 
-            <span class="badge">
-                Operating Systems Final Project
+    <section class="hero">
+
+        <span class="badge">
+            Operating Systems Final Project
+        </span>
+
+        <h1 class="title">
+            Wherever You Go, Algo.
+        </h1>
+
+        <p class="subtitle">
+            Interactive Operating System Algorithm Simulator
+        </p>
+
+        <p class="description">
+
+            A modern educational platform for visualizing
+            CPU Scheduling, Memory Allocation,
+            Virtual Memory, and Disk Scheduling algorithms.
+
+            Compare algorithm performance, analyze results,
+            and gain a deeper understanding of Operating
+            Systems concepts through simulation.
+
+        </p>
+
+    </section>
+
+    <!-- PROJECT STATS -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <h2>4</h2>
+
+            <p>Core Modules</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>15</h2>
+
+            <p>Algorithms</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>100%</h2>
+
+            <p>Interactive</p>
+
+        </div>
+
+    </section>
+
+    <!-- MODULES -->
+
+    <section class="modules">
+
+        <!-- CPU -->
+
+        <a href="/cpu-scheduling"
+           class="module-btn cpu">
+
+            <div class="icon">
+                ⚙️
+            </div>
+
+            <h2>
+                CPU Scheduling
+            </h2>
+
+            <p>
+                FCFS, SJF, Priority Scheduling,
+                Priority Preemptive,
+                and Round Robin.
+            </p>
+
+            <span class="status">
+                Available
             </span>
 
-            <h1 class="title">
-                Wherever You Go, Algo.
-            </h1>
+        </a>
 
-            <p class="subtitle">
-                Explore • Visualize • Understand OS Algorithms
+        <!-- MEMORY -->
+
+        <a href="/memory-management"
+           class="module-btn memory">
+
+            <div class="icon">
+                🧠
+            </div>
+
+            <h2>
+                Memory Management
+            </h2>
+
+            <p>
+                First Fit,
+                Best Fit,
+                and Worst Fit Allocation.
             </p>
 
-            <p class="description">
-                Learn and experiment with operating system concepts through
-                interactive simulations of scheduling, memory allocation,
-                virtual memory, and disk management algorithms.
+            <span class="status">
+                Available
+            </span>
+
+        </a>
+
+        <!-- VIRTUAL MEMORY -->
+
+        <a href="/virtual-memory"
+           class="module-btn virtual">
+
+            <div class="icon">
+                💾
+            </div>
+
+            <h2>
+                Virtual Memory
+            </h2>
+
+            <p>
+                FIFO,
+                LRU,
+                and Optimal Page Replacement.
             </p>
 
-        </section>
+            <span class="status">
+                Available
+            </span>
 
-        <!-- MODULES -->
-        <section class="modules">
+        </a>
 
-            <!-- CPU Scheduling -->
-            <a href="/cpu-scheduling" class="module-btn cpu">
+        <!-- DISK -->
 
-                <div class="icon">⚙️</div>
+        <a href="/disk-management"
+           class="module-btn disk">
 
-                <h2>CPU Scheduling</h2>
+            <div class="icon">
+                📀
+            </div>
 
-                <p>
-                    FCFS, SJF, Priority Scheduling,
-                    and Round Robin.
-                </p>
+            <h2>
+                Disk Scheduling
+            </h2>
 
-                <span class="status">
-                    Available
-                </span>
+            <p>
+                FCFS,
+                SSTF,
+                SCAN,
+                and C-SCAN.
+            </p>
 
-            </a>
+            <span class="status">
+                Available
+            </span>
 
-            <!-- Memory Management -->
-            <a href="/memory-management" class="module-btn memory">
+        </a>
 
-                <div class="icon">🧠</div>
+    </section>
 
-                <h2>Memory Management</h2>
+</div>
 
-                <p>
-                    First Fit, Best Fit,
-                    and Worst Fit Allocation.
-                </p>
+<footer>
 
-                <span class="status">
-                    Available
-                </span>
+    <p>
+        Wherever You Go, Algo.
+    </p>
 
-            </a>
+    <small>
+        Operating Systems Final Project • Computer Engineering
+    </small>
 
-            <!-- Virtual Memory -->
-            <a href="/virtual-memory" class="module-btn virtual">
-
-                <div class="icon">💾</div>
-
-                <h2>Virtual Memory</h2>
-
-                <p>
-                    FIFO, LRU,
-                    and Optimal Page Replacement.
-                </p>
-
-                <span class="status">
-                    Available
-                </span>
-
-            </a>
-
-            <!-- Disk Management -->
-            <a href="/disk-management" class="module-btn disk">
-
-                <div class="icon">📀</div>
-
-                <h2>Disk Management</h2>
-
-                <p>
-                    FCFS, SSTF,
-                    SCAN, and C-SCAN.
-                </p>
-
-                <span class="status">
-                    Coming Soon
-                </span>
-
-            </a>
-
-        </section>
-
-    </div>
-
-    <!-- FOOTER -->
-    <footer>
-        <p>
-            Wherever You Go, Algo. • Operating System Algorithm Simulator
-        </p>
-    </footer>
+</footer>
 
 </body>
 </html>
+```

@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Memory Management Simulator</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/mm_mng.css') }}">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet"
           href="{{ url_for('static', filename='css/header.css') }}">
-    
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/mm_mng.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 </head>
+
 <body>
 
 {% include 'header.html' %}
@@ -29,27 +31,32 @@
     </a>
     <h1>Memory Allocation Simulator</h1>
 
-    <form method="POST">
+            <form method="POST">
 
-        <label>Memory Holes (comma separated)</label>
+                <label>Memory Holes</label>
 
-        <input
-            type="text"
-            name="blocks"
-            placeholder="100,200,300"
-            required>
+                <input
+                    type="text"
+                    name="blocks"
+                    placeholder="100,500,200,300"
+                    required>
 
-        <label>Incoming Job Size (K)</label>
+                <label>Incoming Job Size (K)</label>
 
+                <input
+                    type="number"
+                    name="job_size"
+                    placeholder="212"
+                    required>
         <input
             type="text"
             name="job_size"
             placeholder="50,80,120"
             required>
 
-        <label>Allocation Algorithm</label>
+                <label>Allocation Algorithm</label>
 
-        <select name="algorithm">
+                <select name="algorithm">
 
             <option value="FIRST">
                 First Fit
@@ -59,50 +66,60 @@
                 Best Fit
             </option>
 
-            <option value="WORST">
-                Worst Fit
-            </option>
+                    <option value="WORST">
+                        Worst Fit
+                    </option>
 
-        </select>
+                </select>
 
-        <button type="submit">
-            Allocate Memory
-        </button>
+                <button
+                    type="submit"
+                    class="execute-btn">
+                    Allocate Memory
+                </button>
 
-    </form>
+            </form>
 
-    {% if memory_blocks %}
+        </div>
 
-    <div class="results">
+        <!-- RIGHT CARD -->
 
-    <h2>Allocation Results</h2>
+        <div class="info-card">
 
-    {% for result in job_results %}
-        <h3>Job {{ loop.index }} ({{ result.size }}K): {{ result.message }}</h3>
-    {% endfor %}
+            <h3>Allocation Guide</h3>
 
-    <h2>Final Memory Layout</h2>
+            <div class="guide-item">
 
-    {% for block in memory_map %}
+                <h4>First Fit</h4>
 
-        {% if block.status == "JOB" %}
+                <p>
+                    Allocates the first memory block
+                    large enough for the process.
+                </p>
 
-            <div class="memory job">
-                {{ block.size }}K [JOB]
             </div>
 
-        {% else %}
+            <div class="guide-item">
 
-            <div class="memory free">
-                {{ block.size }}K [FREE]
+                <h4>Best Fit</h4>
+
+                <p>
+                    Allocates the smallest suitable
+                    memory block available.
+                </p>
+
             </div>
 
-        {% endif %}
+            <div class="guide-item">
 
-    {% endfor %}
+                <h4>Worst Fit</h4>
 
-    <h2>{{ allocation_result }}</h2>
+                <p>
+                    Allocates the largest available
+                    memory block first.
+                </p>
 
+<<<<<<< HEAD
 </div>
         
     {% endif %}
@@ -136,6 +153,95 @@
     {% endfor %}
 
 </div>
+=======
+            </div>
+
+        </div>
+
+    </div>
+
+    {% if memory_blocks %}
+
+    <section class="results-section">
+
+        <h2>Allocation Results</h2>
+
+        <div class="table-card">
+
+            <h3>{{ allocation_result }}</h3>
+
+            {% for block in memory_map %}
+
+                {% if block.status == "JOB" %}
+
+                    <div class="memory job">
+
+                        Process Allocated:
+                        {{ block.size }}K
+
+                    </div>
+
+                {% else %}
+
+                    <div class="memory free">
+
+                        Free Memory:
+                        {{ block.size }}K
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>RAM Visualization</h3>
+
+            <div class="ram">
+
+                <div class="segment os">
+                    Operating System
+                </div>
+
+                {% for block in memory_map %}
+
+                    {% if block.status == "JOB" %}
+
+                        <div class="segment process">
+
+                            Process
+                            <br>
+                            {{ block.size }}K
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="segment free">
+
+                            Free
+                            <br>
+                            {{ block.size }}K
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+>>>>>>> dbb03e1eabe66a844ff25a288da364d72bdc1333
 </div>
+
 </body>
 </html>

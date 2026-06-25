@@ -1,3 +1,4 @@
+```css
 /* =========================
    RESET
 ========================= */
@@ -29,27 +30,22 @@ body{
 }
 
 /* =========================
-   HERO SECTION
+   HERO
 ========================= */
 
 .hero{
     text-align:center;
-    padding:70px 20px 60px;
+    padding:70px 20px 50px;
 }
 
 .badge{
     display:inline-block;
-
     background:#dbeafe;
     color:#2563eb;
-
     padding:10px 18px;
-
     border-radius:999px;
-
     font-size:14px;
     font-weight:600;
-
     margin-bottom:25px;
 }
 
@@ -57,28 +53,52 @@ body{
     font-size:3.5rem;
     font-weight:800;
     letter-spacing:-1px;
-
     margin-bottom:18px;
 }
 
 .subtitle{
     font-size:1.5rem;
     font-weight:600;
-
     color:#2563eb;
-
     margin-bottom:20px;
 }
 
 .description{
     max-width:800px;
-
     margin:auto;
-
     color:#64748b;
-
     font-size:1.1rem;
     line-height:1.8;
+}
+
+/* =========================
+   PROJECT STATS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+    margin-bottom:60px;
+}
+
+.stat-card{
+    background:white;
+    border-radius:24px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.stat-card h2{
+    font-size:2.5rem;
+    color:#2563eb;
+    margin-bottom:10px;
+}
+
+.stat-card p{
+    color:#64748b;
+    font-weight:500;
 }
 
 /* =========================
@@ -87,9 +107,8 @@ body{
 
 .modules{
     display:grid;
-
     grid-template-columns:
-        repeat(2, minmax(350px, 450px));
+        repeat(2,minmax(350px,450px));
 
     justify-content:center;
 
@@ -132,63 +151,37 @@ body{
         0 20px 40px rgba(0,0,0,.12);
 }
 
-/* =========================
-   ICONS
-========================= */
-
 .icon{
     font-size:2.7rem;
-
     margin-bottom:25px;
 }
-
-/* =========================
-   CARD TITLES
-========================= */
 
 .module-btn h2{
     font-size:2rem;
     font-weight:700;
-
     margin-bottom:12px;
 }
 
-/* =========================
-   CARD DESCRIPTION
-========================= */
-
 .module-btn p{
     color:#64748b;
-
     font-size:1rem;
-
     line-height:1.6;
-
     flex-grow:1;
 }
 
-/* =========================
-   STATUS BADGE
-========================= */
-
 .status{
     display:inline-block;
-
     width:fit-content;
-
     padding:8px 14px;
-
     border-radius:999px;
-
     font-size:13px;
     font-weight:600;
-
     background:#ecfdf5;
     color:#10b981;
 }
 
 /* =========================
-   TOP BORDER COLORS
+   CARD COLORS
 ========================= */
 
 .cpu{
@@ -213,21 +206,30 @@ body{
 
 footer{
     background:white;
-
     border-top:1px solid #e2e8f0;
-
     text-align:center;
+    padding:35px;
+    margin-top:30px;
+}
 
-    padding:30px;
+footer p{
+    font-weight:700;
+    margin-bottom:8px;
+}
 
+footer small{
     color:#64748b;
 }
 
 /* =========================
-   RESPONSIVE TABLET
+   TABLET
 ========================= */
 
 @media(max-width:900px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
 
     .modules{
         grid-template-columns:1fr;
@@ -237,10 +239,11 @@ footer{
         height:auto;
         min-height:240px;
     }
+
 }
 
 /* =========================
-   RESPONSIVE MOBILE
+   MOBILE
 ========================= */
 
 @media(max-width:768px){
@@ -264,4 +267,6 @@ footer{
     .module-btn h2{
         font-size:1.5rem;
     }
+
 }
+

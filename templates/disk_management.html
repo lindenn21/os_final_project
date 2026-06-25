@@ -1,15 +1,27 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Disk Management</title>
+    <title>Disk Scheduling Simulator</title>
 
-    <link rel="stylesheet"href="{{ url_for('static', filename='css/header.css') }}">
-    <link rel="stylesheet"href="{{ url_for('static', filename='css/disk_management.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
 
-</head>  
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/disk_management.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+</head>
+
 <body>
 
 {% include 'header.html' %}
@@ -19,93 +31,295 @@
     <a href="/" class="back-btn">
         ← Back to Home
     </a>
-    <h1>Disk Management</h1>
 
-    <form method="POST">
+    <section class="hero">
 
-        <label>Number of Tracks</label>
+        <h1>Disk Scheduling Simulator</h1>
 
-        <input
-            type="number"
-            name="tracks"
-            placeholder="200"
-            required>
+        <p>
+            Simulate and compare disk scheduling algorithms
+            with visual head movement tracking.
+        </p>
 
-        <label>Request Queue (comma separated)</label>
+    </section>
 
-        <input
-            type="text"
-            name="requests"
-            placeholder="55, 58, 39, 18, 90, 160, 150, 38, 184"
-            required>
+    <div class="dashboard-grid">
 
-        <label>Initial Head Position</label>
+        <div class="form-card">
 
-        <input
-            type="number"
-            name="initial_head"
-            placeholder="50"
-            required>
+            <h3>Input Parameters</h3>
 
-        <label>Scheduling Algorithm</label>
+            <form method="POST">
 
-        <select name="algorithm">
-            <option value="FCFS">First-Come-First-Serve (FCFS)</option>
-            <option value="SSTF">Shortest Seek Time First (SSTF)</option>
-            <option value="SCAN">SCAN (Elevator)</option>
-            <option value="C-SCAN">Circular SCAN (C-SCAN)</option>
+                <label>Number of Tracks</label>
 
-        </select>
+                <input
+                    type="number"
+                    name="tracks"
+                    placeholder="200"
+                    required>
 
-        <label>Direction (Used only for SCAN and C-SCAN)</label>
+                <label>Request Queue</label>
 
-        <select name="direction">
-            <option value="LEFT">Left</option>
-            <option value="RIGHT">Right</option>
+                <input
+                    type="text"
+                    name="requests"
+                    placeholder="55,58,39,18,90,160,150,38,184"
+                    required>
 
-        </select>
+                <label>Initial Head Position</label>
 
-        <button type="submit">
-            Simulate
-        </button>
+                <input
+                    type="number"
+                    name="initial_head"
+                    placeholder="50"
+                    required>
 
-    </form>
+                <label>Scheduling Algorithm</label>
 
-{% if seek_sequence %}
+                <select name="algorithm">
 
-<div class="results">
+                    <option value="FCFS">
+                        First Come First Serve
+                    </option>
 
-    <h2>Simulation Results</h2>
+                    <option value="SSTF">
+                        Shortest Seek Time First
+                    </option>
 
-    <p>
-        <strong>Seek Sequence:</strong>
-        {{ seek_sequence }}
-    </p>
+                    <option value="SCAN">
+                        SCAN
+                    </option>
 
-    <p>
-        <strong>Total Head Movement:</strong>
-        {{ total_seek }}
-    </p>
+                    <option value="C-SCAN">
+                        C-SCAN
+                    </option>
 
-    <table>
+                </select>
 
-        <tr>
-            <th>Step</th>
-            <th>Track</th>
-        </tr>
+                <label>Direction</label>
 
-        {% for track in seek_sequence %}
+                <select name="direction">
 
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ track }}</td>
-        </tr>
+                    <option value="LEFT">
+                        Left
+                    </option>
 
-        {% endfor %}
+                    <option value="RIGHT">
+                        Right
+                    </option>
 
-    </table>
+                </select>
 
-</div>
+                <button
+                    type="submit"
+                    class="execute-btn">
+
+                    Run Simulation
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="info-card">
+
+            <h3>Algorithm Guide</h3>
+
+            <div class="guide-item">
+
+                <h4>FCFS</h4>
+
+                <p>
+                    Services requests according to arrival order.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>SSTF</h4>
+
+                <p>
+                    Services the nearest track request first.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>SCAN</h4>
+
+                <p>
+                    Moves like an elevator across the disk.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>C-SCAN</h4>
+
+                <p>
+                    Services requests in a circular direction.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% if seek_sequence %}
+
+    <section class="results-section">
+
+        <h2>Results Summary</h2>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <h4>Algorithm</h4>
+
+                <span>{{ algorithm }}</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h4>Total Head Movement</h4>
+
+                <span>{{ total_seek }}</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h4>Total Steps</h4>
+
+                <span>{{ seek_sequence|length - 1 }}</span>
+
+            </div>
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>Seek Sequence</h3>
+
+            <p>
+                {{ seek_sequence }}
+            </p>
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>Disk Head Movement</h3>
+
+            <div class="chart-wrap">
+
+                <canvas id="seekChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>Seek Sequence Details</h3>
+
+            <table>
+
+                <tr>
+                    <th>Step</th>
+                    <th>Track</th>
+                    <th>Seek Distance</th>
+                </tr>
+
+                {% for track in seek_sequence %}
+
+                <tr>
+
+                    <td>{{ loop.index0 }}</td>
+
+                    <td>{{ track }}</td>
+
+                    <td>
+
+                        {% if loop.index0 == 0 %}
+                            —
+                        {% else %}
+                            {{ (track - seek_sequence[loop.index0 - 1])|abs }}
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </section>
+
+<script>
+
+const seq = {{ seek_sequence | tojson }};
+
+const labels = seq.map((_, i) => `Step ${i}`);
+
+new Chart(document.getElementById('seekChart'), {
+
+    type: 'line',
+
+    data: {
+
+        labels,
+
+        datasets: [{
+
+            label: 'Head Position',
+
+            data: seq,
+
+            borderColor: '#2563eb',
+
+            backgroundColor: '#2563eb22',
+
+            pointRadius: 5,
+
+            tension: 0,
+
+            fill: false
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
+            }
+
+        }
+
+    }
+
+});
+
+</script>
 
 {% endif %}
 
@@ -113,3 +327,4 @@
 
 </body>
 </html>
+```
