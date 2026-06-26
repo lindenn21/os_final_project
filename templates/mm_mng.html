@@ -31,6 +31,10 @@
 
     <form method="POST">
 
+        {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
+        {% endif %}
+
         <label>Memory Holes (comma separated)</label>
 
         <input

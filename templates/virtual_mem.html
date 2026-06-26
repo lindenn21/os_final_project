@@ -6,8 +6,9 @@
 
     <title>Virtual Memory Simulator</title>
 
-    <link rel="stylesheet"href="{{ url_for('static', filename='css/header.css') }}">
-    <link rel="stylesheet"href="{{ url_for('static', filename='css/virtual_mem.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/virtual_mem.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>  
 <body>
@@ -22,6 +23,10 @@
     <h1>Virtual Memory Simulator</h1>
 
     <form method="POST">
+
+        {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
+        {% endif %}
 
         <label>Number of Frames</label>
 

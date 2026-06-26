@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algo Buddies | WYG,A</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/members.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+{% include 'header.html' %}
+
+<div class="container">
+
+    <section class="hero">
+
+        <span class="badge">
+            Team Members
+        </span>
+
+        <h1>Algo Buddies</h1>
+
+        <p class="description">
+            Meet the group behind this OS algorithm simulator. Dedication and perseverance for algorithms and operating systems have brought us together to create this project. We hope you enjoy using it as much as we enjoyed building it!  
+        </p>
+
+    </section>
+
+    <section class="members-grid">
+
+        <div class="member-card">
+            <div class="photo-frame">
+                <span>Paste Photo 1</span>
+            </div>
+            <h3>Linden Powell Rivera</h3>
+            <p>Backend Architect & File Management | Structured the backbone of the simulator, ensuring optimal file organization and seamless data flow.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="photo-frame">
+                <span>Paste Photo 2</span>
+            </div>
+            <h3>Dave Michael Sinsioco</h3>
+            <p>Backend Developer & System Troubleshooter | Focused on server-side logic and spearheaded hardware and software diagnostics to keep the system running flawlessly.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="photo-frame">
+                <span>Paste Photo 3</span>
+            </div>
+            <h3>Aldrin Paul Reyes</h3>
+            <p>Frontend Lead & UI/UX Designer | Crafted the visual identity, designed the layout, and analyzed user needs to create an intuitive interface.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="photo-frame">
+                <span>Paste Photo 4</span>
+            </div>
+            <h3>Vincent Aliling</h3>
+            <p>Frontend Developer & Quality Assurance | Fine-tuned the user interface, polished the design, and implemented robust error handling for a seamless user experience.</p>
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>

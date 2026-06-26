@@ -11,6 +11,9 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/cpu_sched.css') }}">
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -43,6 +46,10 @@
             <h3>Input Parameters</h3>
 
             <form method="POST">
+
+                {% if error_message %}
+                <div class="error-message">{{ error_message }}</div>
+                {% endif %}
 
                 <label>Arrival Times</label>
 
@@ -193,6 +200,32 @@
                 {% endfor %}
 
             </table>
+
+        </div>
+
+        <div class="gantt-card">
+
+            <h3>Gantt Chart</h3>
+
+            <div class="gantt-chart">
+                {% for segment in timeline %}
+                <div
+                    class="gantt-segment"
+                    style="
+                        left: {{ segment['start'] * 40 }}px;
+                        width: {{ ((segment['end'] - segment['start']) * 40 if ((segment['end'] - segment['start']) * 40) > 40 else 40) }}px;
+                    "
+                >
+                    <span>{{ segment['pid'] }}<br>{{ segment['start'] }} - {{ segment['end'] }}</span>
+                </div>
+                {% endfor %}
+
+                <div class="gantt-axis">
+                    {% for t in range(0, timeline_end + 1) %}
+                    <span style="left: {{ t * 40 }}px;">{{ t }}</span>
+                    {% endfor %}
+                </div>
+            </div>
 
         </div>
 
