@@ -171,6 +171,33 @@ select:focus{
     color:#166534;
 }
 
+/* ALLOCATION BLOCKS */
+
+.allocation-container{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.allocation-block{
+    padding:18px;
+    border-radius:14px;
+    font-weight:600;
+    text-align:center;
+}
+
+.block-success{
+    background:#dbeafe;
+    border:2px solid #3b9edd;
+    color:#1e40af;
+}
+
+.block-failed{
+    background:#fee2e2;
+    border:2px solid #e05555;
+    color:#991b1b;
+}
+
 /* RAM VISUALIZATION */
 
 .ram{

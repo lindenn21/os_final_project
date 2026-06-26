@@ -500,7 +500,7 @@ def memory_management():
     ram_segments = []
     job_sizes = []
     algorithm = None
-    allocation_result = ""
+    allocation_result = []
     error_message = None
 
     if request.method == "POST":
@@ -511,64 +511,63 @@ def memory_management():
                 "Memory Holes"
             )
 
-            job_size = parse_int(
+            job_sizes = parse_int_list(
                 request.form["job_size"],
-                "Incoming Job Size",
-                min_value=1
+                "Incoming Job Size"
             )
 
+            if any(b < 1 for b in memory_blocks):
+                raise ValueError("Memory Holes must be greater than 0.")
+            if any(j < 1 for j in job_sizes):
+                raise ValueError("Job sizes must be greater than 0.")
+
             algorithm = request.form["algorithm"]
-            chosen_index = -1
 
-            if algorithm == "FIRST":
-                for i, block in enumerate(memory_blocks):
-                    if block >= job_size:
-                        chosen_index = i
-                        break
+            for job_size in job_sizes:
+                chosen_index = -1
 
-            elif algorithm == "BEST":
-                best_size = float("inf")
-                for i, block in enumerate(memory_blocks):
-                    if block >= job_size and block < best_size:
-                        best_size = block
-                        chosen_index = i
+                if algorithm == "FIRST":
+                    for i, block in enumerate(memory_blocks):
+                        if block >= job_size:
+                            chosen_index = i
+                            break
 
-            elif algorithm == "WORST":
-                worst_size = -1
-                for i, block in enumerate(memory_blocks):
-                    if block >= job_size and block > worst_size:
-                        worst_size = block
-                        chosen_index = i
+                elif algorithm == "BEST":
+                    best_size = float("inf")
+                    for i, block in enumerate(memory_blocks):
+                        if block >= job_size and block < best_size:
+                            best_size = block
+                            chosen_index = i
 
-            if chosen_index != -1:
-                selected_block = memory_blocks[chosen_index]
-                remaining = selected_block - job_size
+                elif algorithm == "WORST":
+                    worst_size = -1
+                    for i, block in enumerate(memory_blocks):
+                        if block >= job_size and block > worst_size:
+                            worst_size = block
+                            chosen_index = i
 
-                for i, block in enumerate(memory_blocks):
-                    if i == chosen_index:
-                        memory_map.append({
-                            "size": job_size,
-                            "status": "JOB"
-                        })
-                        if remaining > 0:
-                            memory_map.append({
-                                "size": remaining,
-                                "status": "FREE"
-                            })
-                    else:
-                        memory_map.append({
-                            "size": block,
-                            "status": "FREE"
-                        })
-            else:
-                allocation_result = (
-                    "No suitable memory block found."
-                )
-                for block in memory_blocks:
-                    memory_map.append({
-                        "size": block,
-                        "status": "FREE"
-                    })
+                if chosen_index != -1:
+                    selected_block = memory_blocks[chosen_index]
+                    remaining = selected_block - job_size
+
+                    memory_blocks[chosen_index] = remaining
+
+                    allocation_result.append(
+                        f"Job {job_size}K allocated to block of {selected_block}K "
+                        f"({remaining}K left over)" if remaining > 0
+                        else f"Job {job_size}K allocated to block of {selected_block}K (exact fit)"
+                    )
+
+                else:
+                    allocation_result.append(
+                        f"Job {job_size}K: No suitable memory block found."
+                    )
+
+            for block in memory_blocks:
+                memory_map.append({
+                    "size": block,
+                    "status": "FREE" if block > 0 else "USED"
+                })
 
         except ValueError as e:
             error_message = str(e)

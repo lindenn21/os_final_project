@@ -65,9 +65,9 @@
                 <label>Incoming Job Size (K)</label>
 
                 <input
-                    type="number"
+                    type="text"
                     name="job_size"
-                    placeholder="80"
+                    placeholder="80,150,250"
                     required>
 
                 <label>Allocation Algorithm</label>
@@ -152,20 +152,52 @@
                 <div class="memory {{ block.status | lower }}">
                     {{ block.size }}K [{{ block.status }}]
                 </div>
+        
+            {% endfor %}
+        
+        </div>
+
+        {% if allocation_result %}
+
+        <div class="results-section">
+
+            <h2 class="section-title">Job Allocation Results</h2>
+            <div class="allocation-container">
+
+                {% for entry in allocation_result %}
+
+                    <div class="allocation-block {% if 'No suitable' in entry %}block-failed{% else %}block-success{% endif %}">
+                        
+                        {{ entry }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {% endif %}
+
+
+        {% if allocation_result %}
+
+        <div class="allocation-results">
+
+            {% for result in allocation_result %}
+
+                <p class="result-text">{{ result }}</p>
 
             {% endfor %}
 
-            {% if allocation_result %}
-            <p class="result-text">{{ allocation_result }}</p>
-            {% endif %}
-
         </div>
+
+        {% endif %}
 
     </section>
 
     {% endif %}
 
 </div>
-
 </body>
 </html>
