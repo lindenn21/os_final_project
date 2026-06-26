@@ -129,3 +129,38 @@
         padding:26px;
     }
 }
+
+.members-footer {
+    margin-top:50px;
+    background:#ffffff;
+    border:2px solid #0033a0;
+    padding:30px 20px;
+    border-radius:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,.04);
+}
+
+.footer-brand {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:16px;
+}
+
+.footer-brand img {
+    width:100px;
+    height:100px;
+    object-fit:contain;
+}
+
+.footer-text {
+    max-width:760px;
+    color:#475569;
+    font-size:0.95rem;
+    line-height:1.6;
+}
+
+.footer-line {
+    margin:0;
+}
