@@ -2,15 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Virtual Memory Simulator</title>
 
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/virtual_mem.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+=======
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
 
-</head>  
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/virtual_mem.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
+
 <body>
 
 {% include 'header.html' %}
@@ -20,75 +35,197 @@
     <a href="/" class="back-btn">
         ← Back to Home
     </a>
-    <h1>Virtual Memory Simulator</h1>
 
-    <form method="POST">
+    <section class="hero">
 
+<<<<<<< HEAD
         {% if error_message %}
         <div class="error-message">{{ error_message }}</div>
         {% endif %}
 
         <label>Number of Frames</label>
+=======
+        <h1>Virtual Memory Simulator</h1>
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
 
-        <input
-            type="number"
-            name="frames"
-            placeholder="3"
-            required>
+        <p>
+            Simulate FIFO, LRU, and Optimal
+            page replacement algorithms.
+        </p>
 
-        <label>Reference String (comma separated)</label>
+    </section>
 
-        <input
-            type="text"
-            name="reference"
-            placeholder="1,2,3,4,1,2,5,1,2,3,4,5"
-            required>
+    <div class="dashboard-grid">
 
-        <label>Allocation Algorithm</label>
+        <div class="form-card">
 
-        <select name="algorithm">
-            <option value="FIFO">First-In-First-Out (FIFO)</option>
+            <h3>Input Parameters</h3>
 
-            <option value="LRU">Least Recently Used (LRU)</option>
+            <form method="POST">
 
-            <option value="Optimal">Optimal</option>
+                <label>Reference String</label>
 
-        </select>
+                <input
+                    type="text"
+                    name="reference"
+                    placeholder="7,0,1,2,0,3,0,4"
+                    required>
 
-        <button type="submit">
-            Simulate
-        </button>
+                <label>Number of Frames</label>
 
-    </form>
+                <input
+                    type="number"
+                    name="frames"
+                    min="1"
+                    required>
 
-    {% if history %}
+                <label>Algorithm</label>
 
-    <div class="results">
+                <select name="algorithm">
 
-    <h2>Simulation Results</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Step</th>
-                <th>Reference</th>
-                <th>Memory State</th>
-                <th>Page Fault</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for step in history %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ step.page }}</td>
-                <td>{{ step.memory }}</td>
-                <td>{{ step.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-</div>
-        </tbody>
-    </table>
+                    <option value="FIFO">
+                        FIFO
+                    </option>
+
+                    <option value="LRU">
+                        LRU
+                    </option>
+
+                    <option value="Optimal">
+                        Optimal
+                    </option>
+
+                </select>
+
+                <button
+                    type="submit"
+                    class="execute-btn">
+
+                    Run Simulation
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="info-card">
+
+            <h3>Algorithm Guide</h3>
+
+            <div class="guide-item">
+
+                <h4>FIFO</h4>
+
+                <p>
+                    Replaces the oldest page
+                    currently in memory.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>LRU</h4>
+
+                <p>
+                    Replaces the page that
+                    has not been used recently.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>Optimal</h4>
+
+                <p>
+                    Replaces the page that
+                    will not be used for the
+                    longest future period.
+                </p>
+
+            </div>
+
+        </div>
 
     </div>
 
+    {% if history %}
+
+    <section class="results-section">
+
+        <h2>Results Summary</h2>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <h4>Page Faults</h4>
+
+                <span>{{ page_faults }}</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h4>Page Hits</h4>
+
+                <span>{{ page_hits }}</span>
+
+            </div>
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>Simulation History</h3>
+
+            <table>
+
+                <tr>
+
+                    <th>Page</th>
+                    <th>Status</th>
+                    <th>Frames</th>
+
+                </tr>
+
+                {% for step in history %}
+
+                <tr>
+
+                    <td>{{ step.page }}</td>
+
+                    <td>{{ step.status }}</td>
+
+                    <td>
+
+                        {% for p in step.memory %}
+
+                            {{ p }}
+
+                            {% if not loop.last %}
+                                ,
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </section>
+
     {% endif %}
+
+</div>
+
+</body>
+</html>

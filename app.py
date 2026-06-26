@@ -497,10 +497,16 @@ def memory_management():
 
     memory_blocks = []
     memory_map = []
-    job_size = None
+    ram_segments = []
+    job_sizes = []
     algorithm = None
+<<<<<<< HEAD
     allocation_result = ""
     error_message = None
+=======
+    algorithm_label = None
+    job_results = []
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
 
     if request.method == "POST":
 
@@ -510,6 +516,7 @@ def memory_management():
                 "Memory Holes"
             )
 
+<<<<<<< HEAD
             job_size = parse_int(
                 request.form["job_size"],
                 "Incoming Job Size",
@@ -542,12 +549,66 @@ def memory_management():
             if chosen_index != -1:
                 selected_block = memory_blocks[chosen_index]
                 remaining = selected_block - job_size
+=======
+            memory_blocks = [
+                int(x.strip())
+                for x in request.form["blocks"].split(",")
+            ]
 
-                allocation_result = (
-                    f"Job allocated to {selected_block}K block "
-                    f"({remaining}K remaining)"
-                )
+            job_sizes = [
+                int(x.strip())
+                for x in request.form["job_size"].split(",")
+            ]
 
+            algorithm = request.form["algorithm"]
+
+            algorithm_labels = {
+                "FIRST": "First Fit",
+                "BEST": "Best Fit",
+                "WORST": "Worst Fit"
+            }
+    
+            algorithm_label = algorithm_labels.get(algorithm)
+
+            current_holes = memory_blocks.copy()
+
+            ram_segments = [
+                {"size": b, "status": "FREE"} for b in memory_blocks
+            ]
+
+            for job_size in job_sizes:
+
+                chosen_index = -1
+
+                # FIRST FIT
+                if algorithm == "FIRST":
+
+                    for i, block in enumerate(current_holes):
+
+                        if block >= job_size:
+                            chosen_index = i
+                            break
+
+                # BEST FIT
+                elif algorithm == "BEST":
+
+                    best_size = float("inf")
+
+                    for i, block in enumerate(current_holes):
+
+                        if block >= job_size and block < best_size:
+                            best_size = block
+                            chosen_index = i
+
+                # WORST FIT
+                elif algorithm == "WORST":
+
+                    worst_size = -1
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
+
+                    for i, block in enumerate(current_holes):
+
+<<<<<<< HEAD
                 for i, block in enumerate(memory_blocks):
                     if i == chosen_index:
                         memory_map.append({
@@ -578,6 +639,56 @@ def memory_management():
             error_message = str(e)
 
         except Exception as e:
+=======
+                        if block >= job_size and block > worst_size:
+                            worst_size = block
+                            chosen_index = i
+
+                if chosen_index != -1:
+
+                    selected_block = current_holes[chosen_index]
+                    remaining = selected_block - job_size
+
+                    job_results.append({
+                        "size": job_size,
+                        "message": f"Allocated in block of size {selected_block}K. Remaining: {remaining}K."
+                    })
+
+                    if remaining > 0:
+                        current_holes[chosen_index] = remaining
+                    else:
+                        current_holes.pop(chosen_index)
+
+                    for segment in ram_segments:
+
+                        if segment["status"] == "FREE" and segment["size"] == selected_block:
+
+                            segment["status"] = "JOB"
+                            segment["size"] = job_size
+                            if remaining > 0:
+                            
+                                idx = ram_segments.index(segment)
+                                ram_segments.insert(idx + 1, {
+                                    "size": remaining,
+                                    "status": "FREE"
+                                })
+                            break
+                
+                else:
+                    job_results.append({
+                        "size": job_size,
+                        "message": "No suitable memory block found."
+                    })
+
+            for block in current_holes:
+                memory_map.append({
+                    "size": block,
+                    "status": "FREE"
+                })
+                
+        except Exception as e:
+            
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
             print("ERROR:", e)
             error_message = (
                 "Invalid input detected. Please use only digits and commas where required."
@@ -587,10 +698,16 @@ def memory_management():
         "mm_mng.html",
         memory_blocks=memory_blocks,
         memory_map=memory_map,
-        job_size=job_size,
+        ram_segments=ram_segments,
+        job_sizes=job_sizes,
         algorithm=algorithm,
+<<<<<<< HEAD
         allocation_result=allocation_result,
         error_message=error_message
+=======
+        algorithm_label=algorithm_label,
+        job_results=job_results
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
     )
 
 # VIRTUAL MEMORY MANAGEMENT PAGE

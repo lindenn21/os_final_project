@@ -1,17 +1,33 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Disk Management</title>
+    <title>Disk Scheduling Simulator</title>
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/disk_management.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/disk_management.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+=======
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 
 </head>
+
 <body>
 
 {% include 'header.html' %}
@@ -21,155 +37,302 @@
     <a href="/" class="back-btn">
         ← Back to Home
     </a>
-    <h1>Disk Management</h1>
 
-    <form method="POST">
+    <section class="hero">
 
+<<<<<<< HEAD
         {% if error_message %}
         <div class="error-message">{{ error_message }}</div>
         {% endif %}
 
         <label>Number of Tracks</label>
+=======
+        <h1>Disk Scheduling Simulator</h1>
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
 
-        <input
-            type="number"
-            name="tracks"
-            placeholder="200"
-            required>
+        <p>
+            Simulate and compare disk scheduling algorithms
+            with visual head movement tracking.
+        </p>
 
-        <label>Request Queue (comma separated)</label>
+    </section>
 
-        <input
-            type="text"
-            name="requests"
-            placeholder="55, 58, 39, 18, 90, 160, 150, 38, 184"
-            required>
+    <div class="dashboard-grid">
 
-        <label>Initial Head Position</label>
+        <div class="form-card">
 
-        <input
-            type="number"
-            name="initial_head"
-            placeholder="50"
-            required>
+            <h3>Input Parameters</h3>
 
-        <label>Scheduling Algorithm</label>
+            <form method="POST">
 
-        <select name="algorithm">
-            <option value="FCFS">First-Come-First-Serve (FCFS)</option>
-            <option value="SSTF">Shortest Seek Time First (SSTF)</option>
-            <option value="SCAN">SCAN (Elevator)</option>
-            <option value="C-SCAN">Circular SCAN (C-SCAN)</option>
-        </select>
+                <label>Number of Tracks</label>
 
-        <label>Direction (Used only for SCAN and C-SCAN)</label>
+                <input
+                    type="number"
+                    name="tracks"
+                    placeholder="200"
+                    required>
 
-        <select name="direction">
-            <option value="LEFT">Left</option>
-            <option value="RIGHT">Right</option>
-        </select>
+                <label>Request Queue</label>
 
-        <button type="submit">
-            Simulate
-        </button>
+                <input
+                    type="text"
+                    name="requests"
+                    placeholder="55,58,39,18,90,160,150,38,184"
+                    required>
 
-    </form>
+                <label>Initial Head Position</label>
 
-{% if seek_sequence %}
+                <input
+                    type="number"
+                    name="initial_head"
+                    placeholder="50"
+                    required>
 
-<div class="results">
+                <label>Scheduling Algorithm</label>
 
-    <h2>Simulation Results</h2>
+                <select name="algorithm">
 
-    <div class="metrics">
-        <div class="metric-card">
-            <div class="metric-label">Algorithm</div>
-            <div class="metric-value">{{ algorithm }}</div>
+                    <option value="FCFS">
+                        First Come First Serve
+                    </option>
+
+                    <option value="SSTF">
+                        Shortest Seek Time First
+                    </option>
+
+                    <option value="SCAN">
+                        SCAN
+                    </option>
+
+                    <option value="C-SCAN">
+                        C-SCAN
+                    </option>
+
+                </select>
+
+                <label>Direction</label>
+
+                <select name="direction">
+
+                    <option value="LEFT">
+                        Left
+                    </option>
+
+                    <option value="RIGHT">
+                        Right
+                    </option>
+
+                </select>
+
+                <button
+                    type="submit"
+                    class="execute-btn">
+
+                    Run Simulation
+
+                </button>
+
+            </form>
+
         </div>
-        <div class="metric-card">
-            <div class="metric-label">Total Head Movement</div>
-            <div class="metric-value">{{ total_seek }}</div>
+
+        <div class="info-card">
+
+            <h3>Algorithm Guide</h3>
+
+            <div class="guide-item">
+
+                <h4>FCFS</h4>
+
+                <p>
+                    Services requests according to arrival order.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>SSTF</h4>
+
+                <p>
+                    Services the nearest track request first.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>SCAN</h4>
+
+                <p>
+                    Moves like an elevator across the disk.
+                </p>
+
+            </div>
+
+            <div class="guide-item">
+
+                <h4>C-SCAN</h4>
+
+                <p>
+                    Services requests in a circular direction.
+                </p>
+
+            </div>
+
         </div>
-        <div class="metric-card">
-            <div class="metric-label">Steps</div>
-            <div class="metric-value">{{ seek_sequence|length - 1 }}</div>
-        </div>
+
     </div>
 
-    <p>
-        <strong>Seek Sequence:</strong>
-        {{ seek_sequence }}
-    </p>
+    {% if seek_sequence %}
 
-    <div class="chart-wrap">
-        <canvas id="seekChart" role="img" aria-label="Line chart showing disk head movement across track positions"></canvas>
-    </div>
+    <section class="results-section">
 
-    <table>
+        <h2>Results Summary</h2>
 
-        <tr>
-            <th>Step</th>
-            <th>Track</th>
-            <th>Seek Distance</th>
-        </tr>
+        <div class="stats-grid">
 
-        {% for track in seek_sequence %}
+            <div class="stat-card">
 
-        <tr>
-            <td>{{ loop.index0 }}</td>
-            <td>{{ track }}</td>
-            <td>
-                {% if loop.index0 == 0 %}
-                    —
-                {% else %}
-                    {{ (track - seek_sequence[loop.index0 - 1])|abs }}
-                {% endif %}
-            </td>
-        </tr>
+                <h4>Algorithm</h4>
 
-        {% endfor %}
+                <span>{{ algorithm }}</span>
 
-    </table>
+            </div>
 
-</div>
+            <div class="stat-card">
+
+                <h4>Total Head Movement</h4>
+
+                <span>{{ total_seek }}</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h4>Total Steps</h4>
+
+                <span>{{ seek_sequence|length - 1 }}</span>
+
+            </div>
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>Seek Sequence</h3>
+
+            <p>
+                {{ seek_sequence }}
+            </p>
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>Disk Head Movement</h3>
+
+            <div class="chart-wrap">
+
+                <canvas id="seekChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>Seek Sequence Details</h3>
+
+            <table>
+
+                <tr>
+                    <th>Step</th>
+                    <th>Track</th>
+                    <th>Seek Distance</th>
+                </tr>
+
+                {% for track in seek_sequence %}
+
+                <tr>
+
+                    <td>{{ loop.index0 }}</td>
+
+                    <td>{{ track }}</td>
+
+                    <td>
+
+                        {% if loop.index0 == 0 %}
+                            —
+                        {% else %}
+                            {{ (track - seek_sequence[loop.index0 - 1])|abs }}
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </section>
 
 <script>
-    const seq = {{ seek_sequence | tojson }};
-    const labels = seq.map((_, i) => `Step ${i}`);
 
-    new Chart(document.getElementById('seekChart'), {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [{
-                label: 'Head position',
-                data: seq,
-                borderColor: '#185FA5',
-                backgroundColor: '#185FA522',
-                pointBackgroundColor: seq.map((_, i) => i === 0 ? '#BA7517' : '#185FA5'),
-                pointRadius: seq.map((_, i) => i === 0 ? 7 : 4),
-                tension: 0,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: { callbacks: { label: ctx => `Track: ${ctx.parsed.y}` } }
-            },
-            scales: {
-                y: {
-                    title: { display: true, text: 'Track number' }
-                },
-                x: {
-                    title: { display: true, text: 'Seek step' },
-                    ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 12 }
-                }
+const seq = {{ seek_sequence | tojson }};
+
+const labels = seq.map((_, i) => `Step ${i}`);
+
+new Chart(document.getElementById('seekChart'), {
+
+    type: 'line',
+
+    data: {
+
+        labels,
+
+        datasets: [{
+
+            label: 'Head Position',
+
+            data: seq,
+
+            borderColor: '#2563eb',
+
+            backgroundColor: '#2563eb22',
+
+            pointRadius: 5,
+
+            tension: 0,
+
+            fill: false
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
             }
+
         }
-    });
+
+    }
+
+});
+
 </script>
 
 {% endif %}
@@ -178,3 +341,4 @@
 
 </body>
 </html>
+```

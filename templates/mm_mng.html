@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Memory Management Simulator</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/mm_mng.css') }}">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet"
           href="{{ url_for('static', filename='css/header.css') }}">
-    
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/mm_mng.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 </head>
+
 <body>
 
 {% include 'header.html' %}
@@ -27,7 +29,10 @@
     <a href="/" class="back-btn">
         ← Back to Home
     </a>
+
+    <div class="hero">
     <h1>Memory Allocation Simulator</h1>
+<<<<<<< HEAD
 
     <form method="POST">
 
@@ -112,34 +117,171 @@
 
     <div class="segment os">
         OS
+=======
+>>>>>>> 674d1f7f22666bdf9d60b8cef0863687d05f2326
     </div>
 
-    {% for block in memory_map %}
+        <div class="dashboard-grid">
 
-        {% if block.status == "JOB" %}
+        <!-- LEFT CARD -->
 
-            <div class="segment process">
-                {{ block.size }}K JOB
+        <div class="form-card">
+
+            <form method="POST">
+
+                <label>Memory Holes</label>
+
+                <input
+                    type="text"
+                    name="blocks"
+                    placeholder="100,500,200,300"
+                    required>
+
+                <label>Incoming Job Size (K)</label>
+
+                <input
+                    type="text"
+                    name="job_size"
+                    placeholder="80,150,250"
+                    required>
+        
+                <label>Allocation Algorithm</label>
+
+                <select name="algorithm">
+
+                    <option value="FIRST">
+                        First Fit
+                    </option>
+
+                    <option value="BEST">
+                        Best Fit
+                    </option>
+
+                    <option value="WORST">
+                        Worst Fit
+                    </option>
+
+                </select>
+
+                <button
+                    type="submit"
+                    class="execute-btn">
+                    Allocate Memory
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- RIGHT CARD -->
+
+        <div class="info-card">
+
+            <h3>Allocation Guide</h3>
+
+            <div class="guide-item">
+
+                <h4>First Fit</h4>
+
+                <p>
+                    Allocates the first memory block
+                    large enough for the process.
+                </p>
+
             </div>
 
-        {% else %}
+            <div class="guide-item">
 
-            <div class="segment free">
-                {{ block.size }}K FREE
+                <h4>Best Fit</h4>
+
+                <p>
+                    Allocates the smallest suitable
+                    memory block available.
+                </p>
+
             </div>
 
-        {% endif %}
+            <div class="guide-item">
 
-    {% endfor %}
+                <h4>Worst Fit</h4>
 
-</div>
+                <p>
+                    Allocates the largest available
+                    memory block first.
+                </p>
 
-        <div class="segment process">
-            Process C
+            </div>
+
         </div>
 
     </div>
 
+    {% if job_results %}
+
+    <section class="results-section">
+
+        <h2>Allocation Results</h2>
+
+        <div class="table-card">
+
+            <h3>Algorithm: {{ algorithm_label }}</h3>
+
+            {% for result in job_results %}
+
+                <div class="memory job">
+                    Job {{ result.size }}K —
+                    {{ result.message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="table-card">
+
+            <h3>RAM Visualization</h3>
+
+            <div class="ram">
+
+                <div class="segment os">
+                    Operating System
+                </div>
+
+                {% for segment in ram_segments %}
+
+                    {% if segment.status == "JOB" %}
+
+                        <div class="segment process">
+
+                            Process
+                            <br>
+                            {{ segment.size }}K
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="segment free">
+
+                            Free
+                            <br>
+                            {{ segment.size }}K
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
 </div>
+
 </body>
 </html>
