@@ -7,17 +7,20 @@
 
     <title>Memory Management Simulator</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/header.css') }}">
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/mm_mng.css') }}">
-
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/header.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/mm_mng.css') }}">
 </head>
 
 <body>
@@ -30,99 +33,24 @@
         ← Back to Home
     </a>
 
-    <div class="hero">
-    <h1>Memory Allocation Simulator</h1>
+    <section class="hero">
+        <h1>Memory Allocation Simulator</h1>
 
-    <form method="POST">
+        <p>
+            Allocate a job into memory holes using First Fit,
+            Best Fit, or Worst Fit allocation strategies.
+        </p>
 
         {% if error_message %}
         <div class="error-message">{{ error_message }}</div>
         {% endif %}
+    </section>
 
-        <label>Memory Holes (comma separated)</label>
-
-        <input
-            type="text"
-            name="blocks"
-            placeholder="100,200,300"
-            required>
-
-        <label>Incoming Job Size (K)</label>
-
-        <input
-            type="number"
-            name="job_size"
-            required>
-
-        <label>Allocation Algorithm</label>
-
-        <select name="algorithm">
-
-            <option value="FIRST">
-                First Fit
-            </option>
-
-            <option value="BEST">
-                Best Fit
-            </option>
-
-            <option value="WORST">
-                Worst Fit
-            </option>
-
-        </select>
-
-        <button type="submit">
-            Allocate Memory
-        </button>
-
-    </form>
-
-    {% if memory_blocks %}
-
-    <div class="results">
-
-    <h2>Memory Layout After Allocation</h2>
-
-    {% for block in memory_map %}
-
-        {% if block.status == "JOB" %}
-
-            <div class="memory job">
-                {{ block.size }}K [JOB]
-            </div>
-
-        {% else %}
-
-            <div class="memory free">
-                {{ block.size }}K [FREE]
-            </div>
-
-        {% endif %}
-
-    {% endfor %}
-
-    <h2>{{ allocation_result }}</h2>
-
-</div>
-        
-    {% endif %}
-
-    <hr>
-
-    <h2>RAM Visualization</h2>
-
-    <div class="ram">
-
-    <div class="segment os">
-        OS
-    </div>
-
-        <div class="dashboard-grid">
-
-        <!-- LEFT CARD -->
+    <div class="dashboard-grid">
 
         <div class="form-card">
+
+            <h3>Memory Allocation</h3>
 
             <form method="POST">
 
@@ -131,17 +59,17 @@
                 <input
                     type="text"
                     name="blocks"
-                    placeholder="100,500,200,300"
+                    placeholder="100,200,300"
                     required>
 
                 <label>Incoming Job Size (K)</label>
 
                 <input
-                    type="text"
+                    type="number"
                     name="job_size"
-                    placeholder="80,150,250"
+                    placeholder="80"
                     required>
-        
+
                 <label>Allocation Algorithm</label>
 
                 <select name="algorithm">
@@ -170,8 +98,6 @@
 
         </div>
 
-        <!-- RIGHT CARD -->
-
         <div class="info-card">
 
             <h3>Allocation Guide</h3>
@@ -181,8 +107,8 @@
                 <h4>First Fit</h4>
 
                 <p>
-                    Allocates the first memory block
-                    large enough for the process.
+                    Allocates the first block large enough
+                    to fit the job.
                 </p>
 
             </div>
@@ -192,8 +118,8 @@
                 <h4>Best Fit</h4>
 
                 <p>
-                    Allocates the smallest suitable
-                    memory block available.
+                    Allocates the smallest suitable block
+                    to reduce waste.
                 </p>
 
             </div>
@@ -203,8 +129,8 @@
                 <h4>Worst Fit</h4>
 
                 <p>
-                    Allocates the largest available
-                    memory block first.
+                    Allocates the largest available block
+                    first.
                 </p>
 
             </div>
@@ -213,64 +139,25 @@
 
     </div>
 
-    {% if job_results %}
+    {% if memory_map %}
 
     <section class="results-section">
 
-        <h2>Allocation Results</h2>
+        <h2>Memory Layout After Allocation</h2>
 
         <div class="table-card">
 
-            <h3>Algorithm: {{ algorithm_label }}</h3>
+            {% for block in memory_map %}
 
-            {% for result in job_results %}
-
-                <div class="memory job">
-                    Job {{ result.size }}K —
-                    {{ result.message }}
+                <div class="memory {{ block.status | lower }}">
+                    {{ block.size }}K [{{ block.status }}]
                 </div>
 
             {% endfor %}
 
-        </div>
-
-        <div class="table-card">
-
-            <h3>RAM Visualization</h3>
-
-            <div class="ram">
-
-                <div class="segment os">
-                    Operating System
-                </div>
-
-                {% for segment in ram_segments %}
-
-                    {% if segment.status == "JOB" %}
-
-                        <div class="segment process">
-
-                            Process
-                            <br>
-                            {{ segment.size }}K
-
-                        </div>
-
-                    {% else %}
-
-                        <div class="segment free">
-
-                            Free
-                            <br>
-                            {{ segment.size }}K
-
-                        </div>
-
-                    {% endif %}
-
-                {% endfor %}
-
-            </div>
+            {% if allocation_result %}
+            <p class="result-text">{{ allocation_result }}</p>
+            {% endif %}
 
         </div>
 

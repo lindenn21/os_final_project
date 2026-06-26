@@ -7,9 +7,12 @@
 
     <title>Virtual Memory Simulator</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/virtual_mem.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/virtual_mem.css') }}">
 </head>
 
 <body>
@@ -28,7 +31,7 @@
         <div class="error-message">{{ error_message }}</div>
         {% endif %}
 
-        <label>Number of Frames</label>
+        <h1>Virtual Memory Simulator</h1>
 
         <p>
             Simulate FIFO, LRU, and Optimal

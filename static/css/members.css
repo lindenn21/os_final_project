@@ -73,6 +73,28 @@
     max-width:320px;
 }
 
+.member-links {
+    margin-top:22px;
+}
+
+.github-tab {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 20px;
+    border-radius:999px;
+    background:#0f172a;
+    color:#ffffff;
+    text-decoration:none;
+    font-weight:700;
+    transition:background .25s ease, transform .25s ease;
+}
+
+.github-tab:hover {
+    background:#2563eb;
+    transform:translateY(-2px);
+}
+
 .member-card .member-role {
     margin-top:10px;
     color:#64748b;

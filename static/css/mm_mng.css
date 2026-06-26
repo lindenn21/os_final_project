@@ -207,7 +207,11 @@ select:focus{
     color:#166534;
 }
 
-/* MOBILE */
+.result-text{
+    margin-top:20px;
+    color:#475569;
+    font-weight:600;
+}
 
 @media(max-width:900px){
 
