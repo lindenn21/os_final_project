@@ -8,7 +8,7 @@ MAX_NUMERIC_VALUE = 1000000
 MAX_LIST_ITEMS = 100
 CPU_MAX_NUMERIC_VALUE = 100
 CPU_MAX_LIST_ITEMS = 50
-DISK_MAX_NUMERIC_VALUE = 1000
+DISK_MAX_NUMERIC_VALUE = 100000
 
 
 def parse_int_list(raw_value, field_name, max_items=None, max_value=None):

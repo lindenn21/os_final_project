@@ -57,6 +57,7 @@
                     type="number"
                     name="tracks"
                     placeholder="200"
+                    max="100000"
                     required>
 
                 <label>Request Queue</label>
@@ -237,7 +238,10 @@
                     <th>Step</th>
                     <th>Track</th>
                     <th>Seek Distance</th>
+                    <th>Cumulative Head Movement</th>
                 </tr>
+
+                {% set cumulative = namespace(total=0) %}
 
                 {% for track in seek_sequence %}
 
@@ -257,9 +261,25 @@
 
                     </td>
 
+                    <td>
+
+                        {% if loop.index0 == 0 %}
+                            0
+                        {% else %}
+                            {% set cumulative.total = cumulative.total + (track - seek_sequence[loop.index0 - 1])|abs %}
+                            {{ cumulative.total }}
+                        {% endif %}
+
+                    </td>
+
                 </tr>
 
                 {% endfor %}
+
+                <tr>
+                    <td colspan="3"><strong>Total Head Movement</strong></td>
+                    <td><strong>{{ total_seek }}</strong></td>
+                </tr>
 
             </table>
 
